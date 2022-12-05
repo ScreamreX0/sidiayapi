@@ -23,7 +23,6 @@ public class UserService implements IUserService {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
 
-        userRepository.save(userEntity);
         return new ResponseEntity<>(userEntity, HttpStatus.OK);
     }
 }
