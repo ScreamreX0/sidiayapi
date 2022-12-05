@@ -3,6 +3,7 @@ package com.example.sidiayapi.entities;
 import jakarta.persistence.*;
 
 import java.sql.Date;
+import java.util.List;
 
 @Entity(name = "applications")
 @Table(name = "applications")
@@ -10,6 +11,9 @@ public class ApplicationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @ManyToMany
+    private List<ObjectEntity> objects;
 
     @Column(name = "service")
     private String service;
@@ -47,19 +51,9 @@ public class ApplicationEntity {
     public ApplicationEntity() {
     }
 
-    public ApplicationEntity(
-            int id,
-            String service,
-            int executor,
-            String type,
-            String priority,
-            String status,
-            Date planned_date,
-            Date expiration_date,
-            String description,
-            String completed_works,
-            int author, Date creation_date) {
+    public ApplicationEntity(int id, List<ObjectEntity> objects, String service, int executor, String type, String priority, String status, Date planned_date, Date expiration_date, String description, String completed_works, int author, Date creation_date) {
         this.id = id;
+        this.objects = objects;
         this.service = service;
         this.executor = executor;
         this.type = type;
@@ -79,6 +73,14 @@ public class ApplicationEntity {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public List<ObjectEntity> getObjects() {
+        return objects;
+    }
+
+    public void setObjects(List<ObjectEntity> objects) {
+        this.objects = objects;
     }
 
     public String getService() {
