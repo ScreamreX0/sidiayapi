@@ -1,10 +1,22 @@
 package com.example.sidiayapi.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity(name = "applications_objects")
 @Table(name = "applications_objects")
 public class ApplicationsObjectsEntity {
+    public ApplicationsObjectsEntity() {
+    }
+
+    public ApplicationsObjectsEntity(int application_id, int object_id) {
+        this.application_id = application_id;
+        this.object_id = object_id;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -14,36 +26,4 @@ public class ApplicationsObjectsEntity {
 
     @Column(name = "object_id")
     int object_id;
-
-    public ApplicationsObjectsEntity() {
-    }
-
-    public ApplicationsObjectsEntity(int application_id, int object_id) {
-        this.application_id = application_id;
-        this.object_id = object_id;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getApplication_id() {
-        return application_id;
-    }
-
-    public void setApplication_id(int application_id) {
-        this.application_id = application_id;
-    }
-
-    public int getObject_id() {
-        return object_id;
-    }
-
-    public void setObject_id(int object_id) {
-        this.object_id = object_id;
-    }
 }

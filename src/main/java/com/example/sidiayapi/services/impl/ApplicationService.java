@@ -1,11 +1,10 @@
-package com.example.sidiayapi.services;
+package com.example.sidiayapi.services.impl;
 
 import com.example.sidiayapi.entities.ApplicationEntity;
 import com.example.sidiayapi.entities.ApplicationsObjectsEntity;
-import com.example.sidiayapi.entities.ObjectEntity;
-import com.example.sidiayapi.interfaces.IApplicationService;
 import com.example.sidiayapi.repositories.ApplicationObjectsRepository;
 import com.example.sidiayapi.repositories.ApplicationRepository;
+import com.example.sidiayapi.services.abstracts.IApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,9 +41,9 @@ public class ApplicationService implements IApplicationService {
     }
 
     @Override
-    public ResponseEntity<List<ApplicationEntity>> getApplications() {
+    public ResponseEntity<List<ApplicationEntity>> findAll() {
         try {
-            return new ResponseEntity<>(applicationRepository.findApplications(), HttpStatus.OK);
+            return new ResponseEntity<>(applicationRepository.findAll(), HttpStatus.OK);
         } catch (Exception e) {
             Arrays.stream(e.getStackTrace()).forEach(System.out::println);
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

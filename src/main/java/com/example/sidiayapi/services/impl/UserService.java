@@ -1,8 +1,8 @@
-package com.example.sidiayapi.services;
+package com.example.sidiayapi.services.impl;
 
 import com.example.sidiayapi.entities.UserEntity;
-import com.example.sidiayapi.interfaces.IUserService;
 import com.example.sidiayapi.repositories.UserRepository;
+import com.example.sidiayapi.services.abstracts.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +14,7 @@ import java.util.Arrays;
 public class UserService implements IUserService {
     public UserService() {
     }
+
     @Autowired
     UserRepository userRepository;
 

@@ -1,4 +1,4 @@
-package com.example.sidiayapi.interfaces;
+package com.example.sidiayapi.services.abstracts;
 
 import com.example.sidiayapi.entities.UserEntity;
 import org.springframework.http.ResponseEntity;
