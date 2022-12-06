@@ -2,6 +2,8 @@ package com.example.sidiayapi.entities;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity(name = "objects")
 @Table(name = "objects")
 public class ObjectEntity {

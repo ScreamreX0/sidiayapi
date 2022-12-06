@@ -9,10 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/applications")
@@ -38,10 +35,9 @@ public class ApplicationController {
         return applicationService.getApplications();
     }
 
-    @PostMapping("/add")
+    @GetMapping("/add")
     public ResponseEntity<String> add(@RequestBody Map<String, Object> body) {
         return applicationService.addApplication(new ApplicationEntity (
-                (ArrayList<ObjectEntity>)body.get("objects"),
                 (String)body.get("service"),
                 (EmployeeEntity)body.get("executor"),
                 (String)body.get("type"),
@@ -53,6 +49,6 @@ public class ApplicationController {
                 (String)body.get("completed_works"),
                 (EmployeeEntity)body.get("author"),
                 (Date)body.get("creation_date")
-        ));
+        ), (List<Object>)body.get("objects"));
     }
 }

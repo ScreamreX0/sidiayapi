@@ -12,9 +12,6 @@ public class ApplicationEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToMany
-    private List<ObjectEntity> objects;
-
     @Column(name = "service")
     private String service;
 
@@ -50,11 +47,7 @@ public class ApplicationEntity {
     @Column(name = "creation_date")
     private Date creation_date;
 
-    public ApplicationEntity() {
-    }
-
-    public ApplicationEntity(List<ObjectEntity> objects, String service, EmployeeEntity executor, String type, String priority, String status, Date planned_date, Date expiration_date, String description, String completed_works, EmployeeEntity author, Date creation_date) {
-        this.objects = objects;
+    public ApplicationEntity(String service, EmployeeEntity executor, String type, String priority, String status, Date planned_date, Date expiration_date, String description, String completed_works, EmployeeEntity author, Date creation_date) {
         this.service = service;
         this.executor = executor;
         this.type = type;
@@ -74,14 +67,6 @@ public class ApplicationEntity {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public List<ObjectEntity> getObjects() {
-        return objects;
-    }
-
-    public void setObjects(List<ObjectEntity> objects) {
-        this.objects = objects;
     }
 
     public String getService() {

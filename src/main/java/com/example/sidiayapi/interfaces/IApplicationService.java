@@ -1,7 +1,6 @@
 package com.example.sidiayapi.interfaces;
 
 import com.example.sidiayapi.entities.ApplicationEntity;
-import com.example.sidiayapi.entities.UserEntity;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -11,5 +10,5 @@ public interface IApplicationService {
 
     ResponseEntity<List<ApplicationEntity>> getApplications();
 
-    ResponseEntity<String> addApplication(ApplicationEntity applicationEntity);
+    ResponseEntity<String> addApplication(ApplicationEntity applicationEntity, List<Object> objects);
 }

@@ -1,7 +1,10 @@
 package com.example.sidiayapi.services;
 
 import com.example.sidiayapi.entities.ApplicationEntity;
+import com.example.sidiayapi.entities.ApplicationsObjectsEntity;
+import com.example.sidiayapi.entities.ObjectEntity;
 import com.example.sidiayapi.interfaces.IApplicationService;
+import com.example.sidiayapi.repositories.ApplicationObjectsRepository;
 import com.example.sidiayapi.repositories.ApplicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +22,9 @@ public class ApplicationService implements IApplicationService {
     @Autowired
     ApplicationRepository applicationRepository;
 
+    @Autowired
+    ApplicationObjectsRepository applicationObjectsRepository;
+
     @Override
     public ResponseEntity<ApplicationEntity> getApplicationById(String id) {
         try {
@@ -30,7 +36,7 @@ public class ApplicationService implements IApplicationService {
 
             return new ResponseEntity<>(applicationEntity, HttpStatus.OK);
         } catch (Exception e) {
-            System.out.println("Exception" + Arrays.toString(e.getStackTrace()));
+            Arrays.stream(e.getStackTrace()).forEach(System.out::println);
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
@@ -40,18 +46,18 @@ public class ApplicationService implements IApplicationService {
         try {
             return new ResponseEntity<>(applicationRepository.findApplications(), HttpStatus.OK);
         } catch (Exception e) {
-            System.out.println("Exception" + Arrays.toString(e.getStackTrace()));
+            Arrays.stream(e.getStackTrace()).forEach(System.out::println);
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 
-    public ResponseEntity<String> addApplication(ApplicationEntity applicationEntity) {
-        try {
-            applicationRepository.save(applicationEntity);
-            return new ResponseEntity<>(null, HttpStatus.OK);
-        } catch (Exception e) {
-            System.out.println("Exception:" + Arrays.toString(e.getStackTrace()));
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<String> addApplication(ApplicationEntity applicationEntity, List<Object> objects) {
+        applicationRepository.save(applicationEntity);
+
+        for (Object item : objects) {
+            applicationObjectsRepository.save(new ApplicationsObjectsEntity(applicationEntity.getId(), Integer.parseInt((String) item)));
         }
+
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 }

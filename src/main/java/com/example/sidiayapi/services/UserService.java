@@ -28,7 +28,7 @@ public class UserService implements IUserService {
 
             return new ResponseEntity<>(userEntity, HttpStatus.OK);
         } catch (Exception e) {
-            System.out.println("Exception: " + Arrays.toString(e.getStackTrace()));
+            Arrays.stream(e.getStackTrace()).forEach(System.out::println);
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }

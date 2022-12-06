@@ -18,6 +18,4 @@ public interface ApplicationRepository extends JpaRepository<ApplicationEntity, 
 
     @Query("FROM applications")
     List<ApplicationEntity> findApplications();
-
-
 }
