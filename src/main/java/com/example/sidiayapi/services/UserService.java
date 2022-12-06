@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+
 @Service
 public class UserService implements IUserService {
     public UserService() {
@@ -17,12 +19,17 @@ public class UserService implements IUserService {
 
     @Override
     public ResponseEntity<UserEntity> emailIn(String email, String password) {
-        UserEntity userEntity = userRepository.findUserByEmail(email);
+        try {
+            UserEntity userEntity = userRepository.findUserByEmail(email);
 
-        if (userEntity == null || !password.equals(userEntity.getPassword())) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            if (userEntity == null || !password.equals(userEntity.getPassword())) {
+                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            }
+
+            return new ResponseEntity<>(userEntity, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println("Exception: " + Arrays.toString(e.getStackTrace()));
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
-
-        return new ResponseEntity<>(userEntity, HttpStatus.OK);
     }
 }

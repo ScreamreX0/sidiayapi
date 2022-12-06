@@ -8,6 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Service
 public class ApplicationService implements IApplicationService {
     public ApplicationService() {
@@ -18,12 +21,27 @@ public class ApplicationService implements IApplicationService {
 
     @Override
     public ResponseEntity<ApplicationEntity> getApplicationById(String id) {
-        ApplicationEntity applicationEntity = applicationRepository.findApplicationById(id);
+        try {
+            ApplicationEntity applicationEntity = applicationRepository.findApplicationById(id);
 
-        if (applicationEntity == null) {
+            if (applicationEntity == null) {
+                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            }
+
+            return new ResponseEntity<>(applicationEntity, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println("Exception" + Arrays.toString(e.getStackTrace()));
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @Override
+    public ResponseEntity<List<ApplicationEntity>> getApplications() {
+        try {
+            return new ResponseEntity<>(applicationRepository.findApplications(), HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println("Exception" + Arrays.toString(e.getStackTrace()));
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
-
-        return new ResponseEntity<>(applicationEntity, HttpStatus.OK);
     }
 }

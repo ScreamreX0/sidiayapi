@@ -7,9 +7,14 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @EnableJpaRepositories
 @Repository
 public interface ApplicationRepository extends JpaRepository<ApplicationEntity, Long> {
     @Query("FROM applications WHERE id = :id")
     ApplicationEntity findApplicationById(@Param("id") String id);
+
+    @Query("FROM applications")
+    List<ApplicationEntity> findApplications();
 }
