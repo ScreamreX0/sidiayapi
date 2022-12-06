@@ -18,8 +18,9 @@ public class ApplicationEntity {
     @Column(name = "service")
     private String service;
 
-    @Column(name = "executor")
-    private int executor;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "executor", referencedColumnName = "id")
+    private EmployeeEntity executor;
 
     @Column(name = "type")
     private String type;
@@ -42,8 +43,9 @@ public class ApplicationEntity {
     @Column(name = "completed_works")
     private String completed_works;
 
-    @Column(name = "author")
-    private int author;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "author", referencedColumnName = "id")
+    private EmployeeEntity author;
 
     @Column(name = "creation_date")
     private Date creation_date;
@@ -51,19 +53,7 @@ public class ApplicationEntity {
     public ApplicationEntity() {
     }
 
-    public ApplicationEntity(
-            List<ObjectEntity> objects,
-            String service,
-            int executor,
-            String type,
-            String priority,
-            String status,
-            Date planned_date,
-            Date expiration_date,
-            String description,
-            String completed_works,
-            int author,
-            Date creation_date) {
+    public ApplicationEntity(List<ObjectEntity> objects, String service, EmployeeEntity executor, String type, String priority, String status, Date planned_date, Date expiration_date, String description, String completed_works, EmployeeEntity author, Date creation_date) {
         this.objects = objects;
         this.service = service;
         this.executor = executor;
@@ -102,11 +92,11 @@ public class ApplicationEntity {
         this.service = service;
     }
 
-    public int getExecutor() {
+    public EmployeeEntity getExecutor() {
         return executor;
     }
 
-    public void setExecutor(int executor) {
+    public void setExecutor(EmployeeEntity executor) {
         this.executor = executor;
     }
 
@@ -166,11 +156,11 @@ public class ApplicationEntity {
         this.completed_works = completed_works;
     }
 
-    public int getAuthor() {
+    public EmployeeEntity getAuthor() {
         return author;
     }
 
-    public void setAuthor(int author) {
+    public void setAuthor(EmployeeEntity author) {
         this.author = author;
     }
 

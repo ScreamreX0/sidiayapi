@@ -15,8 +15,7 @@ public class ObjectEntity {
     public ObjectEntity() {
     }
 
-    public ObjectEntity(int id, String name) {
-        this.id = id;
+    public ObjectEntity(String name) {
         this.name = name;
     }
 

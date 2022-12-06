@@ -47,7 +47,7 @@ public class ApplicationService implements IApplicationService {
 
     public ResponseEntity<String> addApplication(ApplicationEntity applicationEntity) {
         try {
-
+            applicationRepository.save(applicationEntity);
             return new ResponseEntity<>(null, HttpStatus.OK);
         } catch (Exception e) {
             System.out.println("Exception:" + Arrays.toString(e.getStackTrace()));
