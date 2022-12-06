@@ -32,4 +32,11 @@ public class ApplicationController {
     public ResponseEntity<List<ApplicationEntity>> get() {
         return applicationService.getApplications();
     }
+
+    @PostMapping("/add")
+    public ResponseEntity<String> add(@RequestBody Map<String, Object> body) {
+        return applicationService.addApplication(new ApplicationEntity(
+
+        ));
+    }
 }

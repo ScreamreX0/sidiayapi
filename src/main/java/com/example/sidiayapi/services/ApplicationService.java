@@ -44,4 +44,14 @@ public class ApplicationService implements IApplicationService {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+
+    public ResponseEntity<String> addApplication(ApplicationEntity applicationEntity) {
+        try {
+
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println("Exception:" + Arrays.toString(e.getStackTrace()));
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
 }

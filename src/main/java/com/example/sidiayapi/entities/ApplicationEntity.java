@@ -51,8 +51,19 @@ public class ApplicationEntity {
     public ApplicationEntity() {
     }
 
-    public ApplicationEntity(int id, List<ObjectEntity> objects, String service, int executor, String type, String priority, String status, Date planned_date, Date expiration_date, String description, String completed_works, int author, Date creation_date) {
-        this.id = id;
+    public ApplicationEntity(
+            List<ObjectEntity> objects,
+            String service,
+            int executor,
+            String type,
+            String priority,
+            String status,
+            Date planned_date,
+            Date expiration_date,
+            String description,
+            String completed_works,
+            int author,
+            Date creation_date) {
         this.objects = objects;
         this.service = service;
         this.executor = executor;
