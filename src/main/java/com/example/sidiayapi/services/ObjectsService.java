@@ -1,4 +1,4 @@
-package com.example.sidiayapi.services.impl;
+package com.example.sidiayapi.services;
 
 import com.example.sidiayapi.entities.ObjectEntity;
 import com.example.sidiayapi.services.abstracts.IObjectsService;

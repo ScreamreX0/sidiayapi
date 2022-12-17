@@ -1,6 +1,8 @@
-package com.example.sidiayapi.services.impl;
+package com.example.sidiayapi.services;
 
+import com.example.sidiayapi.entities.EmployeeEntity;
 import com.example.sidiayapi.entities.UserEntity;
+import com.example.sidiayapi.repositories.EmployeeRepository;
 import com.example.sidiayapi.repositories.UserRepository;
 import com.example.sidiayapi.services.abstracts.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class UserService implements IUserService {

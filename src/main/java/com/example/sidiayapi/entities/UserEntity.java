@@ -28,4 +28,8 @@ public class UserEntity {
     private String username;
     @Column(name = "password")
     private String password;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "employee_id", referencedColumnName = "id")
+    private EmployeeEntity employee_id;
 }
