@@ -4,20 +4,22 @@ import jakarta.persistence.*;
 
 import java.sql.Date;
 
-@Entity(name = "service_request_type")
-@Table(name = "service_request_type")
-public class ServiceRequestType {
+@Entity(name = "service_request_state")
+@Table(name = "service_request_state")
+public class ServiceRequestState {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long service_request_type_id;
+    private long service_request_state_id;
     @Column
-    private String service_request_type_mask_id;
+    private String service_request_state_mask_id;
     @Column
-    private String service_request_type_sysname;
+    private String service_request_state_mask;
     @Column
-    private String service_request_type_sname;
+    private int image_index;
     @Column
-    private String service_request_type_name;
+    private String service_request_state_sysname;
+    @Column
+    private String service_request_state_name;
     @Column
     private Date row_date_begin;
     @Column
@@ -32,4 +34,6 @@ public class ServiceRequestType {
     private String row_modify_user;
     @Column
     private boolean row_is_ready;
+    @Column
+    private long service_request_state_parent_id;
 }
