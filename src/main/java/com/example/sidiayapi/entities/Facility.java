@@ -13,7 +13,7 @@ public class Facility {
     @Column
     private long facility_parent_id;
     @OneToOne
-    private FacilityType facility_type_id;
+    private FacilityType facilityType;
     @Column
     private long shop_id;
     @Column
