@@ -4,9 +4,9 @@ import jakarta.persistence.*;
 
 import java.sql.Date;
 
-@Entity(name = "user")
-@Table(name = "user")
-public class User {
+@Entity(name = "users")
+@Table(name = "users")
+public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long user_id;
