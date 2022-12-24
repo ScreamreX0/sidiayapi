@@ -1,11 +1,17 @@
 package com.example.sidiayapi.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.sql.Date;
 
 @Table(name = "facility_type")
 @Entity(name = "facility_type")
+@Getter
+@Setter
+@NoArgsConstructor
 public class FacilityType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

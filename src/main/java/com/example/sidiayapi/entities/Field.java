@@ -2,14 +2,17 @@ package com.example.sidiayapi.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Date;
 
-@Getter
-@Setter
+
 @Entity(name = "field")
 @Table(name = "field")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Field {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,9 +1,15 @@
 package com.example.sidiayapi.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity(name = "service_request_facility")
 @Table(name = "service_request_facility")
+@Getter
+@Setter
+@NoArgsConstructor
 public class ServiceRequestFacility {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
