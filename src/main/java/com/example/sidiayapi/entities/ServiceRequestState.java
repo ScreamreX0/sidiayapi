@@ -7,21 +7,21 @@ import lombok.Setter;
 
 import java.sql.Date;
 
-@Entity(name = "service_request_state")
-@Table(name = "service_request_state")
+@Entity(name = "service_request_states")
+@Table(name = "service_request_states")
 @Getter
 @Setter
 @NoArgsConstructor
 public class ServiceRequestState {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long service_request_state_id;
+    private Long service_request_state_id;
     @Column
     private String service_request_state_mask_id;
     @Column
     private String service_request_state_mask;
     @Column
-    private int image_index;
+    private Integer image_index;
     @Column
     private String service_request_state_sysname;
     @Column
@@ -39,7 +39,7 @@ public class ServiceRequestState {
     @Column
     private String row_modify_user;
     @Column
-    private boolean row_is_ready;
+    private Boolean row_is_ready;
     @Column
-    private long service_request_state_parent_id;
+    private Long service_request_state_parent_id;
 }

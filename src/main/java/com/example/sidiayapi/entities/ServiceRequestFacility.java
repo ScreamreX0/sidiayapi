@@ -5,15 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "service_request_facility")
-@Table(name = "service_request_facility")
+@Entity(name = "service_request_facilities")
+@Table(name = "service_request_facilities")
 @Getter
 @Setter
 @NoArgsConstructor
 public class ServiceRequestFacility {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long service_request_facility_id;
+    private Long service_request_facility_id;
     @OneToOne
     private ServiceRequest service_request_id;
     @OneToOne

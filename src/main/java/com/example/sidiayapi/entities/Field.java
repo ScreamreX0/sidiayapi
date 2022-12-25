@@ -8,27 +8,27 @@ import lombok.Setter;
 import java.sql.Date;
 
 
-@Entity(name = "field")
-@Table(name = "field")
+@Entity(name = "fields")
+@Table(name = "fields")
 @Getter
 @Setter
 @NoArgsConstructor
 public class Field {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long field_id;
+    private Long field_id;
     @Column
-    private long field_type_id;
+    private Long field_type_id;
     @Column
-    private long field_company_id;
+    private Long field_company_id;
     @Column
-    private long preferential_type_id;
+    private Long preferential_type_id;
     @Column
-    private long place_type_id;
+    private Long place_type_id;
     @Column
     private String field_code;
     @Column
-    private int field_index;
+    private Integer field_index;
     @Column
     private String field_name;
     @Column
@@ -40,7 +40,7 @@ public class Field {
     @Column
     private String field_desc;
     @Column
-    private long armits_id;
+    private Long armits_id;
     @Column
     private String field_left;
     @Column
@@ -50,9 +50,9 @@ public class Field {
     @Column
     private String field_bottom;
     @Column
-    private long reference_well_ids;
+    private Long reference_well_ids;
     @Column
-    private boolean field_actual;
+    private Boolean field_actual;
     @Column
-    private long structure_id;
+    private Long structure_id;
 }

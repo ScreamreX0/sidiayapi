@@ -7,15 +7,15 @@ import lombok.Setter;
 
 import java.sql.Date;
 
-@Entity(name = "service_request_type")
-@Table(name = "service_request_type")
+@Entity(name = "service_request_types")
+@Table(name = "service_request_types")
 @Getter
 @Setter
 @NoArgsConstructor
 public class ServiceRequestType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long service_request_type_id;
+    private Long service_request_type_id;
     @Column
     private String service_request_type_mask_id;
     @Column
@@ -37,5 +37,5 @@ public class ServiceRequestType {
     @Column
     private String row_modify_user;
     @Column
-    private boolean row_is_ready;
+    private Boolean row_is_ready;
 }

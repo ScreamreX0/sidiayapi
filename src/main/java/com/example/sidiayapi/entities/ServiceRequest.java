@@ -8,29 +8,29 @@ import lombok.Setter;
 
 import java.sql.Date;
 
-@Entity(name = "service_request")
-@Table(name = "service_request")
+@Entity(name = "service_requests")
+@Table(name = "service_requests")
 @Getter
 @Setter
 @NoArgsConstructor
 public class ServiceRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long service_request_id;
+    private Long service_request_id;
     @OneToOne
     private Field field;
     @Column
-    private long priority_id;
+    private Long priority_id;
     @OneToOne
     private ServiceRequestType serviceRequestType;
     @OneToOne
     private ServiceRequestState serviceRequestState;
     @Column
-    private long service_id;
+    private Long service_id;
     @OneToOne
     private ServiceRequestKind serviceRequestKind;
     @Column
-    private long service_request_executor_id;
+    private Long service_request_executor_id;
     @Column
     private Date service_request_date;
     @Column
@@ -50,15 +50,15 @@ public class ServiceRequest {
     @Column
     private String service_request_revision_text;
     @Column
-    private boolean service_request_is_shutdown;
+    private Boolean service_request_is_shutdown;
     @Column
-    private int service_request_shutdown_time;
+    private Integer service_request_shutdown_time;
     @Column
     private String create_user;
     @Column
     private Date create_date;
     @Column
-    private long service_request_user_id;
+    private Long service_request_user_id;
     @Column
-    private long service_request_parent_id;
+    private Long service_request_parent_id;
 }

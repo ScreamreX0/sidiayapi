@@ -12,14 +12,14 @@ import java.sql.Date;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Users {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long user_id;
+    private Long user_id;
     @Column
-    private int user_type_id;
+    private Integer user_type_id;
     @Column
-    private boolean user_is_principal;
+    private Boolean user_is_principal;
     @Column
     private String user_name;
     @Column
@@ -39,19 +39,19 @@ public class Users {
     @Column
     private String user_desc;
     @Column
-    private boolean user_actual;
+    private Boolean user_actual;
     @Column
-    private boolean user_log;
+    private Boolean user_log;
     @Column
     private Date last_login;
     @Column
-    private long last_build;
+    private Long last_build;
     @Column
-    private long context_company_id;
+    private Long context_company_id;
     @Column
-    private long current_company_id;
+    private Long current_company_id;
     @Column
-    private long current_shop_id;
+    private Long current_shop_id;
     @Column
     private String user_fullname;
     @Column
@@ -63,7 +63,7 @@ public class Users {
     @Column
     private String user_sign_template;
     @Column
-    private boolean password_is_temp;
+    private Boolean password_is_temp;
     @Column
     private String user_mobile_phone;
 }

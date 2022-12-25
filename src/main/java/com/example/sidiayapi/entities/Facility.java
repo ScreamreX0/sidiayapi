@@ -7,29 +7,29 @@ import lombok.Setter;
 
 import java.sql.Date;
 
-@Entity(name = "facility")
-@Table(name = "facility")
+@Entity(name = "facilities")
+@Table(name = "facilities")
 @Getter
 @Setter
 @NoArgsConstructor
 public class Facility {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long facility_id;
+    private Long facility_id;
     @Column
-    private long facility_parent_id;
+    private Long facility_parent_id;
     @OneToOne
     private FacilityType facilityType;
     @Column
-    private long shop_id;
+    private Long shop_id;
     @Column
-    private long briq_id;
+    private Long briq_id;
     @Column
-    private long shop_ids;
+    private Long shop_ids;
     @Column
-    private long district_id;
+    private Long district_id;
     @Column
-    private long dept_id;
+    private Long dept_id;
     @Column
     private String facility_name;
     @Column
