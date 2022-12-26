@@ -12,6 +12,12 @@ repositories {
 	mavenCentral()
 }
 
+jar {
+	manifest {
+		attributes 'Main-Class': 'com.example.sidiayapi.SidiayapiApplication'
+	}
+}
+
 dependencies {
 	// core
 	implementation 'org.springframework.boot:spring-boot-starter-web'
