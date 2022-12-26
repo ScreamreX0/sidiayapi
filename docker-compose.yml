@@ -10,7 +10,7 @@ services:
       - 'POSTGRES_DB=ShishmaDB'
 
   app:
-    build: ./
+    build: ./out/artifacts/
     container_name: 'java-app'
     ports:
       - "8081:8081"
