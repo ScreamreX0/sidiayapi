@@ -26,6 +26,9 @@ dependencies {
 	// Validation
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+	// Security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
 	// PSQL
 	implementation 'org.postgresql:postgresql:42.5.1'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.0.0'
