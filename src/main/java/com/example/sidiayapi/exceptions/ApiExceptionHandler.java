@@ -1,9 +1,12 @@
 package com.example.sidiayapi.exceptions;
 
+import com.example.sidiayapi.models.ApiError;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.http.HttpStatus;
+import jakarta.validation.ValidationException;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -16,7 +19,8 @@ public class ApiExceptionHandler {
             ApiExceptions.WrongParamsFormatException.class,
             NumberFormatException.class,
             NullPointerException.class,
-            ClassCastException.class})
+            ClassCastException.class,
+            ValidationException.class})
     public ResponseEntity<ApiError> handleWrongParamsFormatException(ApiExceptions.WrongParamsFormatException e, HttpServletRequest request) {
         return new ResponseEntity<>(
                 ApiError.builder()

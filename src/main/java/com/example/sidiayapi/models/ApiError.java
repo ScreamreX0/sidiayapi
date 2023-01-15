@@ -1,4 +1,4 @@
-package com.example.sidiayapi.exceptions;
+package com.example.sidiayapi.models;
 
 import lombok.Builder;
 import lombok.Data;
