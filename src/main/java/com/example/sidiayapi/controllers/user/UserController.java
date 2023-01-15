@@ -1,10 +1,13 @@
 package com.example.sidiayapi.controllers.user;
 
 import com.example.sidiayapi.entities.User;
+import com.example.sidiayapi.exceptions.ApiExceptionHandler;
+import com.example.sidiayapi.exceptions.ApiExceptions;
 import com.example.sidiayapi.services.UserService;
 import com.example.sidiayapi.utils.Logger;
 import com.example.sidiayapi.utils.NetworkStates;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -31,23 +34,15 @@ public class UserController implements IUserController {
         }
     }
 
+    /**
+     * @HTTPStatus 200 -> Sign in success
+     * @HTTPStatus 406 -> Wrong format
+     * @HTTPStatus 401 -> Wrong email or password
+     */
     @Override
-    @PostMapping("/")
-    public ResponseEntity<List<User>> get(@RequestParam Map<String, Object> params) {
-        try {
-            return this.userService.get(Integer.parseInt(params.get("count").toString()));
-        } catch (NumberFormatException | NullPointerException exception) {
-            Logger.log(logTitle, exception.getStackTrace());
-            return new ResponseEntity<>(NetworkStates.Unauthorized.getCode());
-        } catch (Exception exception) {
-            Logger.log(logTitle, exception.getStackTrace());
-            return new ResponseEntity<>(NetworkStates.BadRequest.getCode());
-        }
-    }
-
-    @Override
-    @GetMapping("/{count}")
-    public ResponseEntity<List<User>> get(@PathVariable int count) {
-        return this.userService.get(count);
+    @PostMapping("/sign-in")
+    public ResponseEntity<User> signIn(Map<String, Object> signInParams) {
+        userService.signIn((String) signInParams.get("login"), (String) signInParams.get("password"));
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
