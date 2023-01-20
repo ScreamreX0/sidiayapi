@@ -1,6 +1,6 @@
 package com.example.sidiayapi.controllers.tickettype;
 
-import com.example.sidiayapi.entities.TicketType;
+import com.example.sidiayapi.entities.TicketTypes;
 import com.example.sidiayapi.services.TicketTypeService;
 import com.example.sidiayapi.utils.Logger;
 import com.example.sidiayapi.utils.NetworkStates;
@@ -33,7 +33,7 @@ public class TicketTypeController implements ITicketTypeController {
 
     @Override
     @PostMapping("/")
-    public ResponseEntity<List<TicketType>> get(@RequestParam Map<String, Object> params) {
+    public ResponseEntity<List<TicketTypes>> get(@RequestParam Map<String, Object> params) {
         try {
             return this.ticketTypeService.get(Integer.parseInt(params.get("count").toString()));
         } catch (NumberFormatException | NullPointerException exception) {
@@ -47,7 +47,7 @@ public class TicketTypeController implements ITicketTypeController {
 
     @Override
     @GetMapping("/{count}")
-    public ResponseEntity<List<TicketType>> get(@PathVariable int count) {
+    public ResponseEntity<List<TicketTypes>> get(@PathVariable int count) {
         return this.ticketTypeService.get(count);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.sidiayapi.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,14 +13,15 @@ import java.sql.Date;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Facility {
+@AllArgsConstructor
+public class Facilities {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long facility_id;
     @Column
     private Long facility_parent_id;
     @OneToOne
-    private FacilityType facilityType;
+    private FacilityTypes facilityType;
     @Column
     private Long shop_id;
     @Column

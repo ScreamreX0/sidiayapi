@@ -1,6 +1,7 @@
 package com.example.sidiayapi.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,14 +11,15 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TicketFacility {
+@AllArgsConstructor
+public class TicketsFacilities {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ticket_facility_id;
     @OneToOne
-    private Ticket ticket_id;
+    private Tickets ticket_id;
     @OneToOne
-    private FacilityType facility_type_id;
+    private FacilityTypes facility_type_id;
     @OneToOne
-    private Facility facility_id;
+    private Facilities facility_id;
 }

@@ -6,13 +6,6 @@ import org.springframework.validation.BindingResult;
 import java.util.Arrays;
 
 public class ApiExceptions {
-    public static String parseBindingException(BindingResult bindingResult) {
-        return Arrays.toString(bindingResult.getAllErrors()
-                .stream()
-                .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                .toArray());
-    }
-
     public static class WrongParamsFormatException extends RuntimeException {
         public WrongParamsFormatException() {
         }

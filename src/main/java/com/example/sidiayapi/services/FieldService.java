@@ -1,6 +1,6 @@
 package com.example.sidiayapi.services;
 
-import com.example.sidiayapi.entities.Field;
+import com.example.sidiayapi.entities.Fields;
 import com.example.sidiayapi.repositories.FieldRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
@@ -14,8 +14,8 @@ public class FieldService {
     @Autowired
     FieldRepository fieldRepository;
 
-    public ResponseEntity<List<Field>> get(int count) {
-        List<Field> fields = fieldRepository.findAll();
+    public ResponseEntity<List<Fields>> get(int count) {
+        List<Fields> fields = fieldRepository.findAll();
 
         if (count < 1) {
             return new ResponseEntity<>(fields, HttpStatusCode.valueOf(200));

@@ -1,6 +1,6 @@
 package com.example.sidiayapi.services;
 
-import com.example.sidiayapi.entities.TicketState;
+import com.example.sidiayapi.entities.TicketStates;
 import com.example.sidiayapi.repositories.TicketStateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
@@ -14,8 +14,8 @@ public class TicketStateService {
     @Autowired
     TicketStateRepository ticketStateRepository;
 
-    public ResponseEntity<List<TicketState>> get(int count) {
-        List<TicketState> ticketStates = ticketStateRepository.findAll();
+    public ResponseEntity<List<TicketStates>> get(int count) {
+        List<TicketStates> ticketStates = ticketStateRepository.findAll();
 
         if (count < 1) {
             return new ResponseEntity<>(ticketStates, HttpStatusCode.valueOf(200));

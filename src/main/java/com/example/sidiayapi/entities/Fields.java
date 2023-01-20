@@ -1,6 +1,7 @@
 package com.example.sidiayapi.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,7 +14,8 @@ import java.sql.Date;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Field {
+@AllArgsConstructor
+public class Fields {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long field_id;

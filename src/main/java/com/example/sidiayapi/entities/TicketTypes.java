@@ -1,27 +1,31 @@
 package com.example.sidiayapi.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Date;
 
-@Entity(name = "ticket_kinds")
-@Table(name = "ticket_kinds")
+@Entity(name = "ticket_types")
+@Table(name = "ticket_types")
 @Getter
 @Setter
 @NoArgsConstructor
-public class TicketKind {
+@AllArgsConstructor
+public class TicketTypes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ticket_kind_id;
+    private Long ticket_type_id;
     @Column
-    private String ticket_kind_sysname;
+    private String ticket_type_mask_id;
     @Column
-    private String ticket_kind_name;
+    private String ticket_type_sysname;
     @Column
-    private String ticket_kind_sname;
+    private String ticket_type_sname;
+    @Column
+    private String ticket_type_name;
     @Column
     private Date row_date_begin;
     @Column

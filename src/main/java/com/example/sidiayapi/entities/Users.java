@@ -1,6 +1,7 @@
 package com.example.sidiayapi.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,7 +13,8 @@ import java.sql.Date;
 @Getter
 @Setter
 @NoArgsConstructor
-public class User {
+@AllArgsConstructor
+public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long user_id;
@@ -20,6 +22,8 @@ public class User {
     private Integer user_type_id;
     @Column
     private Boolean user_is_principal;
+    @Column
+    private String user_password;
     @Column
     private String user_name;
     @Column
@@ -29,7 +33,7 @@ public class User {
     @Column
     private String user_lastname;
     @Column
-    private String user_middlename;
+    private String user_middle_name;
     @Column
     private String user_email;
     @Column
@@ -52,10 +56,6 @@ public class User {
     private Long current_company_id;
     @Column
     private Long current_shop_id;
-    @Column
-    private String user_fullname;
-    @Column
-    private String user_shortname;
     @Column
     private String user_struct_name;
     @Column

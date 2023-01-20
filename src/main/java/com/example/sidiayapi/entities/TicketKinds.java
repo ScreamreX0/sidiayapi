@@ -1,31 +1,29 @@
 package com.example.sidiayapi.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Date;
 
-@Entity(name = "ticket_states")
-@Table(name = "ticket_states")
+@Entity(name = "ticket_kinds")
+@Table(name = "ticket_kinds")
 @Getter
 @Setter
 @NoArgsConstructor
-public class TicketState {
+@AllArgsConstructor
+public class TicketKinds {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ticket_state_id;
+    private Long ticket_kind_id;
     @Column
-    private String ticket_state_mask_id;
+    private String ticket_kind_sysname;
     @Column
-    private String ticket_state_mask;
+    private String ticket_kind_name;
     @Column
-    private Integer image_index;
-    @Column
-    private String ticket_state_sysname;
-    @Column
-    private String ticket_state_name;
+    private String ticket_kind_sname;
     @Column
     private Date row_date_begin;
     @Column
@@ -40,6 +38,4 @@ public class TicketState {
     private String row_modify_user;
     @Column
     private Boolean row_is_ready;
-    @Column
-    private Long ticket_state_parent_id;
 }

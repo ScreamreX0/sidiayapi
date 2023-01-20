@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class ApiExceptionHandler {
     /**
-     * @HTTPStatus 405
+     * @HTTPStatus 450
      */
     @ExceptionHandler(value = {
             ApiExceptions.WrongParamsFormatException.class,
@@ -28,12 +28,12 @@ public class ApiExceptionHandler {
                         .request(request.getRequestURI())
                         .customMessage("Wrong params formatting")
                         .build(),
-                HttpStatusCode.valueOf(405)
+                HttpStatusCode.valueOf(450)
         );
     }
 
     /**
-     * @HTTPStatus 406
+     * @HTTPStatus 451
      */
     @ExceptionHandler(value = {ApiExceptions.WrongEmailOrPasswordException.class})
     public ResponseEntity<ApiError> handleWrongEmailOrPasswordException(ApiExceptions.WrongEmailOrPasswordException e, HttpServletRequest request) {
@@ -43,7 +43,7 @@ public class ApiExceptionHandler {
                         .request(request.getRequestURI())
                         .customMessage("Wrong email or password")
                         .build(),
-                HttpStatusCode.valueOf(406)
+                HttpStatusCode.valueOf(451)
         );
     }
 }

@@ -1,16 +1,18 @@
 package com.example.sidiayapi.controllers.ticket;
 
-import com.example.sidiayapi.entities.Ticket;
+import com.example.sidiayapi.entities.Tickets;
+import com.example.sidiayapi.models.AddTicketParams;
 import com.example.sidiayapi.services.TicketService;
 import com.example.sidiayapi.utils.Logger;
 import com.example.sidiayapi.utils.NetworkStates;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/tickets")
@@ -33,21 +35,13 @@ public class TicketController implements ITicketController {
 
     @Override
     @PostMapping("/")
-    public ResponseEntity<List<Ticket>> get(@RequestParam Map<String, Object> params) {
-        try {
-            return this.ticketService.get(Integer.parseInt(params.get("count").toString()));
-        } catch (NumberFormatException | NullPointerException exception) {
-            Logger.log(logTitle, exception.getStackTrace());
-            return new ResponseEntity<>(NetworkStates.Unauthorized.getCode());
-        } catch (Exception exception) {
-            Logger.log(logTitle, exception.getStackTrace());
-            return new ResponseEntity<>(NetworkStates.BadRequest.getCode());
-        }
+    public ResponseEntity<List<Tickets>> get() {
+        return new ResponseEntity<>(ticketService.get(), HttpStatus.OK);
     }
 
     @Override
-    @GetMapping("/{count}")
-    public ResponseEntity<List<Ticket>> get(@PathVariable int count) {
-        return this.ticketService.get(count);
+    @PostMapping("/add")
+    public ResponseEntity<Boolean> add(HashMap<String, Object> params) {
+        return new ResponseEntity<>(ticketService.add(params), HttpStatus.OK);
     }
 }

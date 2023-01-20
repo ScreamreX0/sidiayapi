@@ -1,6 +1,6 @@
 package com.example.sidiayapi.controllers.facility;
 
-import com.example.sidiayapi.entities.Facility;
+import com.example.sidiayapi.entities.Facilities;
 import com.example.sidiayapi.services.FacilityService;
 import com.example.sidiayapi.utils.Logger;
 import com.example.sidiayapi.utils.NetworkStates;
@@ -33,7 +33,7 @@ public class FacilityController implements IFacilityController {
 
     @Override
     @PostMapping("/")
-    public ResponseEntity<List<Facility>> get(@RequestParam Map<String, Object> params) {
+    public ResponseEntity<List<Facilities>> get(@RequestParam Map<String, Object> params) {
         try {
             return this.facilityService.get(Integer.parseInt(params.get("count").toString()));
         } catch (NumberFormatException | NullPointerException exception) {
@@ -47,7 +47,7 @@ public class FacilityController implements IFacilityController {
 
     @Override
     @GetMapping("/{count}")
-    public ResponseEntity<List<Facility>> get(@PathVariable int count) {
+    public ResponseEntity<List<Facilities>> get(@PathVariable int count) {
         return this.facilityService.get(count);
     }
 }

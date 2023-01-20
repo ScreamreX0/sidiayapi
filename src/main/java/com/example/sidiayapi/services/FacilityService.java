@@ -1,6 +1,6 @@
 package com.example.sidiayapi.services;
 
-import com.example.sidiayapi.entities.Facility;
+import com.example.sidiayapi.entities.Facilities;
 import com.example.sidiayapi.repositories.FacilityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
@@ -14,8 +14,8 @@ public class FacilityService {
     @Autowired
     FacilityRepository facilityRepository;
 
-    public ResponseEntity<List<Facility>> get(int count) {
-        List<Facility> facilities = facilityRepository.findAll();
+    public ResponseEntity<List<Facilities>> get(int count) {
+        List<Facilities> facilities = facilityRepository.findAll();
 
         if (count < 1) {
             return new ResponseEntity<>(facilities, HttpStatusCode.valueOf(200));

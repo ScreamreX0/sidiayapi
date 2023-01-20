@@ -1,13 +1,16 @@
 package com.example.sidiayapi.controllers.ticket;
 
-import com.example.sidiayapi.entities.Ticket;
+import com.example.sidiayapi.entities.Tickets;
+import com.example.sidiayapi.models.AddTicketParams;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public interface ITicketController {
     ResponseEntity<String> test();
-    ResponseEntity<List<Ticket>> get(Map<String, Object> params);
-    ResponseEntity<List<Ticket>> get(final int count);
+    ResponseEntity<List<Tickets>> get();
+    ResponseEntity<Boolean> add(HashMap<String, Object> params);
 }

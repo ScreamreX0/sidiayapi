@@ -1,6 +1,6 @@
 package com.example.sidiayapi.controllers.field;
 
-import com.example.sidiayapi.entities.Field;
+import com.example.sidiayapi.entities.Fields;
 import com.example.sidiayapi.services.FieldService;
 import com.example.sidiayapi.utils.Logger;
 import com.example.sidiayapi.utils.NetworkStates;
@@ -33,7 +33,7 @@ public class FieldController implements IFieldController {
 
     @Override
     @PostMapping("/")
-    public ResponseEntity<List<Field>> get(@RequestParam Map<String, Object> params) {
+    public ResponseEntity<List<Fields>> get(@RequestParam Map<String, Object> params) {
         try {
             return this.fieldService.get(Integer.parseInt(params.get("count").toString()));
         } catch (NumberFormatException | NullPointerException exception) {
@@ -47,7 +47,7 @@ public class FieldController implements IFieldController {
 
     @Override
     @GetMapping("/{count}")
-    public ResponseEntity<List<Field>> get(@PathVariable int count) {
+    public ResponseEntity<List<Fields>> get(@PathVariable int count) {
         return this.fieldService.get(count);
     }
 }
