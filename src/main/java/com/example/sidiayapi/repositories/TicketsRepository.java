@@ -1,9 +1,9 @@
 package com.example.sidiayapi.repositories;
 
-import com.example.sidiayapi.entities.TicketsFacilities;
+import com.example.sidiayapi.entities.Tickets;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TicketFacilityRepository extends JpaRepository<TicketsFacilities, Long> {
+public interface TicketsRepository extends JpaRepository<Tickets, Long> {
 }

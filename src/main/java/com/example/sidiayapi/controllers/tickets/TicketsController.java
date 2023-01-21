@@ -1,8 +1,7 @@
-package com.example.sidiayapi.controllers.ticket;
+package com.example.sidiayapi.controllers.tickets;
 
 import com.example.sidiayapi.entities.Tickets;
-import com.example.sidiayapi.models.AddTicketParams;
-import com.example.sidiayapi.services.TicketService;
+import com.example.sidiayapi.services.TicketsService;
 import com.example.sidiayapi.utils.Logger;
 import com.example.sidiayapi.utils.NetworkStates;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +15,11 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/tickets")
-public class TicketController implements ITicketController {
+public class TicketsController implements ITicketsController {
     @Autowired
-    TicketService ticketService;
+    TicketsService ticketsService;
 
-    private final String logTitle = TicketController.class.toString();
+    private final String logTitle = TicketsController.class.toString();
 
     @Override
     @GetMapping
@@ -34,14 +33,14 @@ public class TicketController implements ITicketController {
     }
 
     @Override
-    @PostMapping("/")
+    @GetMapping("/get")
     public ResponseEntity<List<Tickets>> get() {
-        return new ResponseEntity<>(ticketService.get(), HttpStatus.OK);
+        return new ResponseEntity<>(ticketsService.get(), HttpStatus.OK);
     }
 
     @Override
     @PostMapping("/add")
     public ResponseEntity<Boolean> add(HashMap<String, Object> params) {
-        return new ResponseEntity<>(ticketService.add(params), HttpStatus.OK);
+        return new ResponseEntity<>(ticketsService.add(params), HttpStatus.OK);
     }
 }

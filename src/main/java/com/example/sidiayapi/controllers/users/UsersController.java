@@ -1,12 +1,10 @@
-package com.example.sidiayapi.controllers.user;
+package com.example.sidiayapi.controllers.users;
 
 import com.example.sidiayapi.entities.Users;
-import com.example.sidiayapi.exceptions.ApiExceptions;
 import com.example.sidiayapi.models.SignInParams;
-import com.example.sidiayapi.services.UserService;
+import com.example.sidiayapi.services.UsersService;
 import com.example.sidiayapi.utils.Logger;
 import com.example.sidiayapi.utils.NetworkStates;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +14,11 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/users")
-public class UserController implements IUserController {
+public class UsersController implements IUsersController {
     @Autowired
-    UserService userService;
+    UsersService usersService;
 
-    private final String logTitle = UserController.class.toString();
+    private final String logTitle = UsersController.class.toString();
 
     @Override
     @GetMapping
@@ -41,6 +39,6 @@ public class UserController implements IUserController {
     @Override
     @PostMapping("/sign-in")
     public ResponseEntity<Users> signIn(@ModelAttribute SignInParams signInParams, BindingResult bindingResult) {
-        return new ResponseEntity<>(userService.signIn(signInParams), HttpStatus.OK);
+        return new ResponseEntity<>(usersService.signIn(signInParams), HttpStatus.OK);
     }
 }
