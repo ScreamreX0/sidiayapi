@@ -19,7 +19,9 @@ public class UserService {
             throw new ApiExceptions.WrongParamsFormatException();
         }
 
-        Users user = userRepository.findByEmailAndPassword(params.getEmail(), params.getPassword());
+        Users user = userRepository.findByEmailAndPassword(
+                params.getEmail().replaceAll("\"", ""),
+                params.getPassword().replaceAll("\"", ""));
 
         if (user == null) {
             throw new ApiExceptions.WrongEmailOrPasswordException();
