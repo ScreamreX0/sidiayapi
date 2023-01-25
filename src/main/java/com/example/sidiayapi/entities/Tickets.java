@@ -1,11 +1,11 @@
 package com.example.sidiayapi.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Date;
 import java.util.Set;
 
 @Entity(name = "tickets")
@@ -14,11 +14,10 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 public class Tickets {
-    public Tickets(Set<Facilities> facilities, TicketKinds kind, Users author, Users executor, Long priority, Date plane_date, Date expiration_date, Date creation_date, String completed_work, String description, String name, String status, String service) {
-        this.facilities = facilities;
-        this.kind = kind;
-        this.author = author;
-        this.executor = executor;
+    public Tickets(Long priority, String plane_date, String expiration_date, String creation_date, String completed_work, String description, String name, String status, String service) {
+        this.kind = null;
+        this.author = null;
+        this.executor = null;
         this.priority = priority;
         this.plane_date = plane_date;
         this.expiration_date = expiration_date;
@@ -41,23 +40,33 @@ public class Tickets {
     private Users author;
     @OneToOne
     private Users executor;
-
     @Column
+    @NotNull
     private Long priority;
     @Column
-    private Date plane_date;
+    @NotNull
+    private String plane_date;
     @Column
-    private Date expiration_date;
+    @NotNull
+    private String expiration_date;
     @Column
-    private Date creation_date;
+    @NotNull
+    private String creation_date;
     @Column
+    @NotNull
     private String completed_work;
     @Column
+    @NotNull
     private String description;
     @Column
+    @NotNull
     private String name;
     @Column
+    @NotNull
     private String status;
     @Column
+    @NotNull
     private String service;
+
+
 }

@@ -1,6 +1,9 @@
 package com.example.sidiayapi.controllers.tickets;
 
 import com.example.sidiayapi.entities.Tickets;
+import com.example.sidiayapi.exceptions.ApiExceptions;
+import com.example.sidiayapi.models.AddTicketParams;
+import com.example.sidiayapi.models.SignInParams;
 import com.example.sidiayapi.services.TicketsService;
 import com.example.sidiayapi.utils.Logger;
 import com.example.sidiayapi.utils.NetworkStates;
@@ -8,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -40,7 +44,16 @@ public class TicketsController implements ITicketsController {
 
     @Override
     @PostMapping("/add")
-    public ResponseEntity<Boolean> add(HashMap<String, Object> params) {
-        return new ResponseEntity<>(ticketsService.add(params), HttpStatus.OK);
+    public ResponseEntity<Boolean> add(@ModelAttribute AddTicketParams tickets, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new ApiExceptions.WrongParamsFormatException(bindingResult.getAllErrors().toString());
+        }
+
+        return new ResponseEntity<>(ticketsService.add(tickets), HttpStatus.OK);
     }
 }
+
+
+
+
+

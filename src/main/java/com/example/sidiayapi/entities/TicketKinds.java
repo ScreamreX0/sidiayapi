@@ -1,6 +1,7 @@
 package com.example.sidiayapi.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,9 @@ import java.sql.Date;
 public class TicketKinds {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull
     private Long id;
     @Column
+    @NotNull
     private String name;
 }
