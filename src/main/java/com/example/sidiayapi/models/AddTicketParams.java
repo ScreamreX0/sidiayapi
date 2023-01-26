@@ -15,17 +15,18 @@ import java.util.List;
 @AllArgsConstructor
 public class AddTicketParams {
 //    private List<Facilities> facilities;
-//    private TicketKinds kind;
 //    private Users author;
-//    private Users executor;
+    //    private Users executor;
     @Builder.Default
     private Long priority = 1L;
     @Builder.Default
-    private String plane_date = "25.01.23 10:03";
+    private TicketKinds kind = new TicketKinds(1L, "");
     @Builder.Default
-    private String expiration_date = "25.01.23 10:03";
+    private String plane_date = "";
     @Builder.Default
-    private String creation_date = "25.01.23 10:03";
+    private String expiration_date = "";
+    @Builder.Default
+    private String creation_date = "";
     @Builder.Default
     private String completed_work = "";
     @Builder.Default

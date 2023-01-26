@@ -7,6 +7,8 @@ import com.example.sidiayapi.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UsersService {
     @Autowired
@@ -26,5 +28,9 @@ public class UsersService {
         }
 
         return user;
+    }
+
+    public List<Users> get() {
+        return usersRepository.findAll();
     }
 }

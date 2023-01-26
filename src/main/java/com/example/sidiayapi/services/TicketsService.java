@@ -30,20 +30,24 @@ public class TicketsService {
     }
 
     public Boolean add(AddTicketParams params) {
-
         Tickets ticket = new Tickets(
-            params.getPriority(),
-                "24.01.23 23:05",
-            "24.01.23 23:05",
-                "24.01.23 23:05",
-            params.getCompleted_work(),
-            params.getDescription(),
-            params.getName(),
-            params.getStatus(),
-            params.getService()
+                params.getPriority(),
+                params.getKind(),
+                removeQuotes(params.getPlane_date()),
+                removeQuotes(params.getExpiration_date()),
+                removeQuotes(params.getCreation_date()),
+                removeQuotes(params.getCompleted_work()),
+                removeQuotes(params.getDescription()),
+                removeQuotes(params.getName()),
+                removeQuotes(params.getStatus()),
+                removeQuotes(params.getService())
         );
 
         ticketsRepository.save(ticket);
         return true;
+    }
+
+    private String removeQuotes(String str) {
+        return str.substring(1, str.length() - 1);
     }
 }

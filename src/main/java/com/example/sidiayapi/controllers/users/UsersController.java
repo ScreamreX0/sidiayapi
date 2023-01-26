@@ -12,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/users")
 public class UsersController implements IUsersController {
@@ -40,5 +42,11 @@ public class UsersController implements IUsersController {
     @PostMapping("/sign-in")
     public ResponseEntity<Users> signIn(@ModelAttribute SignInParams signInParams, BindingResult bindingResult) {
         return new ResponseEntity<>(usersService.signIn(signInParams), HttpStatus.OK);
+    }
+
+    @Override
+    @GetMapping("/get")
+    public ResponseEntity<List<Users>> get() {
+        return new ResponseEntity<>(usersService.get(), HttpStatus.OK);
     }
 }

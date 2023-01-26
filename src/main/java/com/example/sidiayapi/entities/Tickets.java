@@ -14,11 +14,12 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 public class Tickets {
-    public Tickets(Long priority, String plane_date, String expiration_date, String creation_date, String completed_work, String description, String name, String status, String service) {
-        this.kind = null;
+    public Tickets(Long priority, TicketKinds kind, String plane_date, String expiration_date, String creation_date, String completed_work, String description, String name, String status, String service) {
         this.author = null;
         this.executor = null;
+
         this.priority = priority;
+        this.kind = kind;
         this.plane_date = plane_date;
         this.expiration_date = expiration_date;
         this.creation_date = creation_date;
@@ -67,6 +68,4 @@ public class Tickets {
     @Column
     @NotNull
     private String service;
-
-
 }
