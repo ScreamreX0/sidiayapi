@@ -25,3 +25,5 @@ public class Facilities {
     @NotNull
     private String name;
 }
+
+

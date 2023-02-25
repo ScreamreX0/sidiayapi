@@ -16,3 +16,4 @@ public interface TicketsKindsRepository extends JpaRepository<TicketKinds, Long>
             "WHERE ticket_kinds.id = :id", nativeQuery = true)
     TicketKinds getById(@Param("id") String id);
 }
+
