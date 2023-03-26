@@ -1,26 +1,24 @@
 package com.example.sidiayapi.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Date;
+import java.util.Set;
 
-@Entity(name = "ticket_kinds")
-@Table(name = "ticket_kinds")
+@Entity(name = "Transport")
+@Table(name = "Transport")
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-public class TicketKinds {
+public class Transport {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
-    private Long id;
     @Column
-    @NotNull
+    private Long id;
+    @ManyToMany(mappedBy = "transport")
+    private Set<Tickets> tickets;
+    @Column
     private String name;
 }

@@ -7,25 +7,18 @@ import lombok.Setter;
 
 import java.util.Set;
 
-@Entity(name = "Users")
-@Table(name = "Users")
+@Entity(name = "Equipment")
+@Table(name = "Equipment")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Users {
+public class Equipment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
-    @ManyToMany(mappedBy = "brigades")
+    @ManyToMany(mappedBy = "equipment")
     private Set<Tickets> tickets;
-    @OneToOne
-    @JoinColumn(name = "employee_id")
-    private Employees employee;
     @Column
-    private String password;
-    @Column
-    private String phone;
-    @Column
-    private String photo;
+    private String name;
 }

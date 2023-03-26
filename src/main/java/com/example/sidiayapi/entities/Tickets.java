@@ -1,71 +1,79 @@
 package com.example.sidiayapi.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Date;
 import java.util.Set;
 
-@Entity(name = "tickets")
-@Table(name = "tickets")
+@Entity(name = "Tickets")
+@Table(name = "Tickets")
 @Getter
 @Setter
 @NoArgsConstructor
 public class Tickets {
-    public Tickets(Long priority, TicketKinds kind, String plane_date, String expiration_date, String creation_date, String completed_work, String description, String name, String status, String service) {
-        this.author = null;
-        this.executor = null;
-
-        this.priority = priority;
-        this.kind = kind;
-        this.plane_date = plane_date;
-        this.expiration_date = expiration_date;
-        this.creation_date = creation_date;
-        this.completed_work = completed_work;
-        this.description = description;
-        this.name = name;
-        this.status = status;
-        this.service = service;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
     private Long id;
-    @ManyToMany
-    private Set<Facilities> facilities;
-    @OneToOne
-    private TicketKinds kind;
     @ManyToOne
-    private Users author;
-    @OneToOne
-    private Users executor;
+    @JoinColumn(name = "priority_id")
+    private Priorities priority;
+    @ManyToOne
+    @JoinColumn(name = "service_id")
+    private Services service;
+    @ManyToOne
+    @JoinColumn(name = "status_id")
+    private Statuses status;
+    @ManyToOne
+    @JoinColumn(name = "kind_id")
+    private Kinds kind;
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private Users authorId;
+    @ManyToOne
+    @JoinColumn(name = "executor_id")
+    private Users executorId;
+    @ManyToMany
+    @JoinTable(
+            name = "tickets_brigades",
+            joinColumns = @JoinColumn(name = "ticket_id"),
+            inverseJoinColumns = @JoinColumn(name = "brigade_id")
+    )
+    private Set<Users> brigades;
+    @ManyToMany
+    @JoinTable(
+            name = "tickets_transport",
+            joinColumns = @JoinColumn(name = "ticket_id"),
+            inverseJoinColumns = @JoinColumn(name = "transport_id")
+    )
+    private Set<Transport> transport;
+    @ManyToMany
+    @JoinTable(
+            name = "tickets_facilities",
+            joinColumns = @JoinColumn(name = "ticket_id"),
+            inverseJoinColumns = @JoinColumn(name = "facilities_id")
+    )
+    private Set<Facilities> facilities;
+    @ManyToMany
+    @JoinTable(
+            name = "tickets_equipment",
+            joinColumns = @JoinColumn(name = "ticket_id"),
+            inverseJoinColumns = @JoinColumn(name = "equipment_id")
+    )
+    private Set<Equipment> equipment;
+    @Column(name = "completed_word")
+    private String completedWork;
     @Column
-    @NotNull
-    private Long priority;
-    @Column
-    @NotNull
-    private String plane_date;
-    @Column
-    @NotNull
-    private String expiration_date;
-    @Column
-    @NotNull
-    private String creation_date;
-    @Column
-    @NotNull
-    private String completed_work;
-    @Column
-    @NotNull
     private String description;
-    @Column
-    @NotNull
-    private String name;
-    @Column
-    @NotNull
-    private String status;
-    @Column
-    @NotNull
-    private String service;
+    @Column(name = "improvement_reason")
+    private String improvementReason;
+    @Column(name = "creation_date")
+    private Date creationDate;
+    @Column(name = "plane_date")
+    private Date planeDate;
+    @Column(name = "closing_date")
+    private Date closingDate;
 }

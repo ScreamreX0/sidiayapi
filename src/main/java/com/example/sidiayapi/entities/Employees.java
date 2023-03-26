@@ -5,20 +5,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
-
-@Entity(name = "Facilities")
-@Table(name = "Facilities")
+@Entity(name = "Employees")
+@Table(name = "Employees")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Facilities {
+public class Employees {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
-    @ManyToMany(mappedBy = "facilities")
-    private Set<Tickets> tickets;
+    @Column
+    private String firstname;
     @Column
     private String name;
+    @Column
+    private String lastname;
+    @Column
+    private String email;
 }
