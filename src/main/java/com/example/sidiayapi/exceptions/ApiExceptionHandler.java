@@ -3,6 +3,7 @@ package com.example.sidiayapi.exceptions;
 import com.example.sidiayapi.models.ApiError;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ValidationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BeanPropertyBindingResult;
@@ -12,38 +13,49 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class ApiExceptionHandler {
-    /**
-     * @HTTPStatus 450
-     */
-    @ExceptionHandler(value = {
-            ApiExceptions.WrongParamsFormatException.class,
-            NumberFormatException.class,
-            NullPointerException.class,
-            ClassCastException.class,
-            ValidationException.class})
-    public ResponseEntity<ApiError> handleWrongParamsFormatException(ApiExceptions.WrongParamsFormatException e, HttpServletRequest request) {
+    @ExceptionHandler(value = ApiExceptions.WrongCredentialsException.class)
+    public ResponseEntity<ApiError> handleWrongCredentialsException() {
         return new ResponseEntity<>(
-                ApiError.builder()
-                        .errorMessage(e.getLocalizedMessage())
-                        .request(request.getRequestURI())
-                        .customMessage("Wrong params formatting")
+                ApiError
+                        .builder()
+                        .customMessage("Wrong credentials")
                         .build(),
-                HttpStatusCode.valueOf(450)
+                HttpStatus.UNAUTHORIZED
         );
     }
 
-    /**
-     * @HTTPStatus 451
-     */
-    @ExceptionHandler(value = {ApiExceptions.WrongEmailOrPasswordException.class})
-    public ResponseEntity<ApiError> handleWrongEmailOrPasswordException(ApiExceptions.WrongEmailOrPasswordException e, HttpServletRequest request) {
+    @ExceptionHandler(value = ApiExceptions.WrongParamsException.class)
+    public ResponseEntity<ApiError> handleWrongParamsException(
+    ) {
         return new ResponseEntity<>(
-                ApiError.builder()
-                        .errorMessage(e.getLocalizedMessage())
-                        .request(request.getRequestURI())
-                        .customMessage("Wrong email or password")
+                ApiError
+                        .builder()
+                        .customMessage("Wrong params")
                         .build(),
-                HttpStatusCode.valueOf(451)
+                HttpStatus.UNPROCESSABLE_ENTITY
+        );
+    }
+
+    @ExceptionHandler(value = ApiExceptions.NotFoundException.class)
+    public ResponseEntity<ApiError> handleNotFoundException(ApiExceptions.NotFoundException e) {
+        return new ResponseEntity<>(
+                ApiError
+                        .builder()
+                        .errorMessage(e.getLocalizedMessage())
+                        .customMessage(e.getMessage())
+                        .build(),
+                HttpStatus.NOT_FOUND
+        );
+    }
+
+    @ExceptionHandler(value = ApiExceptions.NotYetHandled.class)
+    public ResponseEntity<ApiError> handleNotYetHandledException(ApiExceptions.NotFoundException e) {
+        return new ResponseEntity<>(
+                ApiError
+                        .builder()
+                        .customMessage(e.getMessage())
+                        .build(),
+                HttpStatus.NOT_IMPLEMENTED
         );
     }
 }

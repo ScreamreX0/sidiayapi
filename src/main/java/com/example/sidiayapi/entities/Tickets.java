@@ -1,5 +1,6 @@
 package com.example.sidiayapi.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@JsonIgnoreProperties(value= {"handler","hibernateLazyInitializer","FieldHandler"})
 public class Tickets {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,9 +27,6 @@ public class Tickets {
     @JoinColumn(name = "service_id")
     private Services service;
     @ManyToOne
-    @JoinColumn(name = "status_id")
-    private Statuses status;
-    @ManyToOne
     @JoinColumn(name = "kind_id")
     private Kinds kind;
     @ManyToOne
@@ -36,7 +35,7 @@ public class Tickets {
     @ManyToOne
     @JoinColumn(name = "executor_id")
     private Users executorId;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "tickets_brigades",
             joinColumns = @JoinColumn(name = "ticket_id"),
@@ -64,6 +63,8 @@ public class Tickets {
             inverseJoinColumns = @JoinColumn(name = "equipment_id")
     )
     private Set<Equipment> equipment;
+    @Column
+    private Integer status;
     @Column(name = "completed_word")
     private String completedWork;
     @Column

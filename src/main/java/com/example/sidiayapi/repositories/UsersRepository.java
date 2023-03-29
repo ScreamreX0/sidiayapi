@@ -8,8 +8,13 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UsersRepository extends JpaRepository<Users, Long> {
-    @Query(value = "SELECT * " +
-            "FROM users " +
-            "WHERE users.email = :email AND users.password = :password", nativeQuery = true)
-    Users findByEmailAndPassword(@Param("email") String email, @Param("password") String password);
+    @Query(value = """
+            SELECT u.*
+                FROM users u
+                INNER JOIN employees e
+                ON e.id = u.employee_id
+                WHERE u.password = :password
+                    AND e.email = :email""",
+            nativeQuery=true)
+    Users findByCredentials(@Param("email") String email, @Param("password") String password);
 }
