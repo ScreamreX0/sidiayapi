@@ -33,12 +33,10 @@ public class TicketsController {
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
-//    @PostMapping("/update/{senderId}/{ticketId}/{ticketStatus}")
-//    public ResponseEntity<Tickets> update(@PathVariable Long senderId,
-//                                          @PathVariable Long ticketId,
-//                                          @PathVariable Integer ticketStatus,
-//                                          @RequestBody TicketDTO ticket) {
-//        return ticketsService.update(senderId, ticketId, ticket, ticketStatus);
-//    }
+    @PostMapping("/update/{senderId}")
+    public ResponseEntity<Tickets> update(@PathVariable Long senderId,
+                                          @RequestBody Tickets ticket) {
+        return ticketsService.update(senderId, ticket);
+    }
 }
 

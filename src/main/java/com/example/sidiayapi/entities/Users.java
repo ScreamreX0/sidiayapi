@@ -19,8 +19,6 @@ public class Users {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
-    @ManyToMany(mappedBy = "brigades")
-    private Set<Tickets> tickets;
     @OneToOne
     @JoinColumn(name = "employee_id")
     private Employees employee;

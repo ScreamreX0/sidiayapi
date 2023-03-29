@@ -18,6 +18,7 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(
                 ApiError
                         .builder()
+                        .errorMessage("Wrong credentials")
                         .customMessage("Wrong credentials")
                         .build(),
                 HttpStatus.UNAUTHORIZED
@@ -30,6 +31,7 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(
                 ApiError
                         .builder()
+                        .errorMessage("Wrong params")
                         .customMessage("Wrong params")
                         .build(),
                 HttpStatus.UNPROCESSABLE_ENTITY
@@ -53,6 +55,7 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(
                 ApiError
                         .builder()
+                        .errorMessage(e.getLocalizedMessage())
                         .customMessage(e.getMessage())
                         .build(),
                 HttpStatus.NOT_IMPLEMENTED

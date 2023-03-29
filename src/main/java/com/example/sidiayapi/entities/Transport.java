@@ -17,8 +17,6 @@ public class Transport {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
-    @ManyToMany(mappedBy = "transport")
-    private Set<Tickets> tickets;
     @Column
     private String name;
 }
