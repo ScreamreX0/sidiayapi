@@ -1,64 +1,34 @@
 package com.example.sidiayapi.exceptions;
 
-import com.example.sidiayapi.models.ApiError;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.ValidationException;
+import com.example.sidiayapi.models.Response;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class ApiExceptionHandler {
-    @ExceptionHandler(value = ApiExceptions.WrongCredentialsException.class)
-    public ResponseEntity<ApiError> handleWrongCredentialsException() {
-        return new ResponseEntity<>(
-                ApiError
-                        .builder()
-                        .errorMessage("Wrong credentials")
-                        .customMessage("Wrong credentials")
-                        .build(),
-                HttpStatus.UNAUTHORIZED
-        );
+    @ExceptionHandler(value = WrongCredentialsException.class)
+    public ResponseEntity<Response> handleWrongCredentialsException(WrongCredentialsException e) {
+        return getResponseEntity("Wrong credentials", e.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler(value = ApiExceptions.WrongParamsException.class)
-    public ResponseEntity<ApiError> handleWrongParamsException(
-    ) {
-        return new ResponseEntity<>(
-                ApiError
-                        .builder()
-                        .errorMessage("Wrong params")
-                        .customMessage("Wrong params")
-                        .build(),
-                HttpStatus.UNPROCESSABLE_ENTITY
-        );
+    @ExceptionHandler(value = WrongParamsException.class)
+    public ResponseEntity<Response> handleWrongParamsException(WrongParamsException e) {
+        return getResponseEntity("Wrong params", e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
-    @ExceptionHandler(value = ApiExceptions.NotFoundException.class)
-    public ResponseEntity<ApiError> handleNotFoundException(ApiExceptions.NotFoundException e) {
-        return new ResponseEntity<>(
-                ApiError
-                        .builder()
-                        .errorMessage(e.getLocalizedMessage())
-                        .customMessage(e.getMessage())
-                        .build(),
-                HttpStatus.NOT_FOUND
-        );
+    @ExceptionHandler(value = NotFoundException.class)
+    public ResponseEntity<Response> handleNotFoundException(NotFoundException e) {
+        return getResponseEntity("Not found", e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(value = ApiExceptions.NotYetHandled.class)
-    public ResponseEntity<ApiError> handleNotYetHandledException(ApiExceptions.NotFoundException e) {
-        return new ResponseEntity<>(
-                ApiError
-                        .builder()
-                        .errorMessage(e.getLocalizedMessage())
-                        .customMessage(e.getMessage())
-                        .build(),
-                HttpStatus.NOT_IMPLEMENTED
-        );
+    @ExceptionHandler(value = NotYetImplementedException.class)
+    public ResponseEntity<Response> handleNotYetHandledException(NotYetImplementedException e) {
+        return getResponseEntity("Not yet implemented", e.getMessage(), HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    private ResponseEntity<Response> getResponseEntity(String defaultMessage, String errorMessage, HttpStatus httpStatus) {
+        return new ResponseEntity<>(new Response(errorMessage == null ? defaultMessage : errorMessage), httpStatus);
     }
 }

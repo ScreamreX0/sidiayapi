@@ -2,22 +2,19 @@ package com.example.sidiayapi.services.tickets;
 
 import com.example.sidiayapi.entities.Tickets;
 import com.example.sidiayapi.enums.StatusesEnum;
-import com.example.sidiayapi.exceptions.ApiExceptions;
+import com.example.sidiayapi.exceptions.NotFoundException;
+import com.example.sidiayapi.exceptions.NotYetImplementedException;
+import com.example.sidiayapi.exceptions.WrongParamsException;
 import com.example.sidiayapi.repositories.TicketsRepository;
-import com.example.sidiayapi.services.tickets.operations.ITicketUpdateOperation;
-import com.example.sidiayapi.services.tickets.operations.TicketUpdateNotFormed;
+import com.example.sidiayapi.services.tickets.operations.*;
 import com.example.sidiayapi.utils.Logger;
 import com.example.sidiayapi.utils.Validator;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class TicketsService {
@@ -31,7 +28,7 @@ public class TicketsService {
     public List<Tickets> getByUserId(Long id) {
         Logger.log("Validating id");
         if (id < 0) {
-            throw new ApiExceptions.WrongParamsException();
+            throw new WrongParamsException();
         }
         Logger.log("Id is correct");
 
@@ -61,21 +58,29 @@ public class TicketsService {
         Logger.log("Checking ticket id..");
         if (newTicket.getId() == null) {
             Logger.log("Error. Ticket id is null.");
-            throw new ApiExceptions.NotFoundException("Ticket not found");
+            throw new NotFoundException("Ticket not found");
         }
 
         Logger.log("Searching for ticket in db..");
         Optional<Tickets> ticketOptional = ticketsRepository.findById(newTicket.getId());
         if (ticketOptional.isEmpty()) {
             Logger.log("Error. Ticket not found");
-            throw new ApiExceptions.NotFoundException("Ticket not found");
+            throw new NotFoundException("Ticket not found");
         }
 
         Logger.log("Ticket found.");
         Tickets ticket = ticketOptional.get();
 
-        List<ITicketUpdateOperation> ticketUpdateOperations = new ArrayList<>();
-        ticketUpdateOperations.add(new TicketUpdateNotFormed());
+        List<ITicketUpdateOperation> ticketUpdateOperations = Arrays.asList(
+                new TicketUpdateNotFormed(),
+                new TicketUpdateNew(),
+                new TicketUpdateAccepted(),
+                new TicketUpdateClosed(),
+                new TicketUpdateDenied(),
+                new TicketUpdateCompleted(),
+                new TicketUpdateStopped(),
+                new TicketUpdateForRevision()
+        );
 
         for (ITicketUpdateOperation operation : ticketUpdateOperations) {
             if (operation.getStatus().value == ticket.getStatus()) {
@@ -88,6 +93,6 @@ public class TicketsService {
                 ), HttpStatus.OK);
             }
         }
-        throw new ApiExceptions.NotYetHandled("Ticket status not yet handled");
+        throw new NotYetImplementedException("Ticket status not yet handled");
     }
 }

@@ -1,7 +1,7 @@
 package com.example.sidiayapi.services;
 
 import com.example.sidiayapi.entities.Users;
-import com.example.sidiayapi.exceptions.ApiExceptions;
+import com.example.sidiayapi.exceptions.WrongCredentialsException;
 import com.example.sidiayapi.models.Credentials;
 import com.example.sidiayapi.repositories.UsersRepository;
 import com.example.sidiayapi.utils.Logger;
@@ -20,7 +20,7 @@ public class UsersService {
 
     public Users signIn(Credentials credentials) {
         if (Validator.anyNullOrBlank(credentials.getEmail(), credentials.getPassword())) {
-            throw new ApiExceptions.WrongCredentialsException();
+            throw new WrongCredentialsException();
         }
 
         Logger.log("Credentials are correct. Trying to enter");
@@ -32,7 +32,7 @@ public class UsersService {
                 );
 
         if (user == null) {
-            throw new ApiExceptions.WrongCredentialsException();
+            throw new WrongCredentialsException();
         }
 
         return user;

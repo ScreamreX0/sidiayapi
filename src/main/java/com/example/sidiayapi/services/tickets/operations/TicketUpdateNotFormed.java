@@ -15,30 +15,30 @@ public final class TicketUpdateNotFormed implements ITicketUpdateOperation {
                           Tickets ticket,
                           Tickets newTicket,
                           TicketsRepository ticketsRepository) {
-        Logger.log("    Updating fields with null-check");
+        Logger.log("    Updating fields that not null");
         if (newTicket.getFacilities() != null) {
             Logger.log("    Updating facilities..");
             ticket.setFacilities(newTicket.getFacilities());
         }
-//        Logger.log("    Done. updating equipment..");
-//        if (ticketUpdatesMap.getEquipment() != null) {
-//            foundTicket.setEquipment(ticketUpdatesMap.getEquipment());
-//        }
-//        Logger.log("    Done. updating transport..");
-//        if (ticketUpdatesMap.getTransport() != null) {
-//            foundTicket.setTransport(ticketUpdatesMap.getTransport());
-//        }
-//        Logger.log("    Done. updating brigades..");
-//        if (ticketUpdatesMap.getBrigades() != null) {
-//            foundTicket.setBrigades(ticketUpdatesMap.getBrigades());
-//        }
-//        Logger.log("    Done. updating executor..");
-//        if (ticketUpdatesMap.getExecutorId() != null) {
-//            foundTicket.setExecutorId(ticketUpdatesMap.getExecutorId());
-//        }
+        if (newTicket.getEquipment() != null) {
+            Logger.log("    Done. updating equipment..");
+            ticket.setEquipment(ticket.getEquipment());
+        }
+        if (newTicket.getTransport() != null) {
+            Logger.log("    Done. updating transport..");
+            ticket.setTransport(newTicket.getTransport());
+        }
+        if (newTicket.getBrigades() != null) {
+            Logger.log("    Done. updating brigades..");
+            ticket.setBrigades(newTicket.getBrigades());
+        }
+        if (newTicket.getExecutorId() != null) {
+            Logger.log("    Done. updating executor..");
+            ticket.setExecutorId(newTicket.getExecutorId());
+        }
 
         Logger.log("    Done.");
-        Logger.log("    Checking for all needed fields in ticket are not null..");
+        Logger.log("    Checking all fields in the ticket for emptiness..");
         if (!Validator.anyNull(
                 ticket.getFacilities(),
                 ticket.getEquipment(),
@@ -48,6 +48,8 @@ public final class TicketUpdateNotFormed implements ITicketUpdateOperation {
         ) {
             Logger.log("    All fields are not null. Updating ticket status..");
             ticket.setStatus(StatusesEnum.NEW.value);
+        } else {
+            Logger.log("    Some fields are empty. Status - NOT_FORMED");
         }
         Logger.log("    Saving ticket..");
         return ticketsRepository.save(ticket);
