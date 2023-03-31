@@ -10,25 +10,29 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ApiExceptionHandler {
     @ExceptionHandler(value = WrongCredentialsException.class)
     public ResponseEntity<Response> handleWrongCredentialsException(WrongCredentialsException e) {
-        return getResponseEntity("Wrong credentials", e.getMessage(), HttpStatus.UNAUTHORIZED);
+        return getResponseEntity("Wrong credentials exception", e.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(value = WrongParamsException.class)
     public ResponseEntity<Response> handleWrongParamsException(WrongParamsException e) {
-        return getResponseEntity("Wrong params", e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        return getResponseEntity("Wrong params exception", e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @ExceptionHandler(value = NotFoundException.class)
     public ResponseEntity<Response> handleNotFoundException(NotFoundException e) {
-        return getResponseEntity("Not found", e.getMessage(), HttpStatus.NOT_FOUND);
+        return getResponseEntity("Not found exception", e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(value = NotYetImplementedException.class)
     public ResponseEntity<Response> handleNotYetHandledException(NotYetImplementedException e) {
-        return getResponseEntity("Not yet implemented", e.getMessage(), HttpStatus.NOT_IMPLEMENTED);
+        return getResponseEntity("Not yet implemented exception", e.getMessage(), HttpStatus.NOT_IMPLEMENTED);
     }
 
     private ResponseEntity<Response> getResponseEntity(String defaultMessage, String errorMessage, HttpStatus httpStatus) {
-        return new ResponseEntity<>(new Response(errorMessage == null ? defaultMessage : errorMessage), httpStatus);
+        return new ResponseEntity<>(new Response(
+                errorMessage == null
+                        ? defaultMessage
+                        : defaultMessage + ": " + errorMessage)
+                , httpStatus);
     }
 }
