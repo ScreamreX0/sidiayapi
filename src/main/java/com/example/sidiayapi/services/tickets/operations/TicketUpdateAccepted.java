@@ -21,20 +21,12 @@ public final class TicketUpdateAccepted implements ITicketUpdateOperation {
                           Tickets ticket,
                           Tickets newTicket,
                           TicketsRepository ticketsRepository) {
-        // Allowed new statuses
         List<Integer> allowedNewStatuses = Arrays.asList(
                 StatusesEnum.COMPLETED.value,
                 StatusesEnum.SUSPENDED.value
         );
 
-        if (Validator.anyNull(newTicket.getStatus())) {
-            Logger.log("    ERROR. New ticket status is null");
-            throw new WrongParamsException("    New ticket status is null");
-        } else if (!allowedNewStatuses.contains(newTicket.getStatus())) {
-            Logger.log("    ERROR. Wrong status: " + newTicket.getStatus()
-                    + ". Allowed values: " + Helper.arrToStr(allowedNewStatuses));
-            throw new NotYetImplementedException("Status not yet implemented");
-        }
+        Helper.checkNewTicketStatus(allowedNewStatuses, newTicket.getStatus());
 
         Logger.log("    New ticket status: " + newTicket.getStatus());
 
