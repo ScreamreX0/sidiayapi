@@ -2,11 +2,9 @@ package com.example.sidiayapi.services.tickets.operations;
 
 import com.example.sidiayapi.entities.Tickets;
 import com.example.sidiayapi.enums.StatusesEnum;
-import com.example.sidiayapi.exceptions.WrongParamsException;
 import com.example.sidiayapi.repositories.TicketsRepository;
 import com.example.sidiayapi.utils.Helper;
 import com.example.sidiayapi.utils.Logger;
-import com.example.sidiayapi.utils.Validator;
 
 
 public final class TicketUpdateStopped implements ITicketUpdateOperation {

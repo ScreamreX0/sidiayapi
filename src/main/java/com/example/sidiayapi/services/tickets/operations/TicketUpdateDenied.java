@@ -9,12 +9,13 @@ import com.example.sidiayapi.repositories.TicketsRepository;
 public final class TicketUpdateDenied implements ITicketUpdateOperation {
     private final StatusesEnum status = StatusesEnum.DENIED;
 
-//    @Override
-//    public Tickets update(Long senderId,
-//                          Tickets ticket,
-//                          Tickets newTicket,
-//                          TicketsRepository ticketsRepository) {
-//    }
+    @Override
+    public Tickets update(Long senderId,
+                          Tickets ticket,
+                          Tickets newTicket,
+                          TicketsRepository ticketsRepository) {
+        throw new NotYetImplementedException("Status: " + status.value + " not handled");
+    }
     @Override
     public StatusesEnum getStatus() {
         return status;
