@@ -5,8 +5,16 @@ import com.example.sidiayapi.enums.StatusesEnum;
 import com.example.sidiayapi.exceptions.NotYetImplementedException;
 import com.example.sidiayapi.exceptions.WrongParamsException;
 import com.example.sidiayapi.repositories.TicketsRepository;
+import com.example.sidiayapi.utils.Helper;
 import com.example.sidiayapi.utils.Logger;
 import com.example.sidiayapi.utils.Validator;
+import org.springframework.util.StringUtils;
+import org.yaml.snakeyaml.util.ArrayUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public final class TicketUpdateNew implements ITicketUpdateOperation {
@@ -17,9 +25,19 @@ public final class TicketUpdateNew implements ITicketUpdateOperation {
                           Tickets ticket,
                           Tickets newTicket,
                           TicketsRepository ticketsRepository) {
+        // Allowed new statuses
+        List<Integer> allowedNewStatuses = Arrays.asList(
+                StatusesEnum.DENIED.value,
+                StatusesEnum.ACCEPTED.value
+        );
+
         if (Validator.anyNull(newTicket.getStatus())) {
             Logger.log("    ERROR. New ticket status is null");
             throw new WrongParamsException("    New ticket status is null");
+        } else if (!allowedNewStatuses.contains(newTicket.getStatus())) {
+            Logger.log("    ERROR. Wrong status: " + newTicket.getStatus()
+                    + ". Allowed values: " + Helper.arrToStr(allowedNewStatuses));
+            throw new NotYetImplementedException("Status not yet implemented");
         }
 
         Logger.log("    New ticket status: " + newTicket.getStatus());
@@ -33,13 +51,8 @@ public final class TicketUpdateNew implements ITicketUpdateOperation {
             ticket.setClosingDate(newTicket.getClosingDate());
         }
 
-        if (newTicket.getStatus() != StatusesEnum.DENIED.value
-                && newTicket.getStatus() != StatusesEnum.ACCEPTED.value) {
-            Logger.log("    ERROR. Wrong status: " + newTicket.getStatus());
-            throw new NotYetImplementedException("Status not yet implemented");
-        }
-
         ticket.setStatus(newTicket.getStatus());
+
         return ticketsRepository.save(ticket);
     }
 

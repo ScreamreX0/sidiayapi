@@ -1,13 +1,10 @@
 package com.example.sidiayapi.services.tickets.operations;
 
-import com.example.sidiayapi.entities.Tickets;
 import com.example.sidiayapi.enums.StatusesEnum;
-import com.example.sidiayapi.exceptions.NotYetImplementedException;
-import com.example.sidiayapi.repositories.TicketsRepository;
 
 
 public final class TicketUpdateStopped implements ITicketUpdateOperation {
-    private final StatusesEnum status = StatusesEnum.STOPPED;
+    private final StatusesEnum status = StatusesEnum.SUSPENDED;
 
 //    @Override
 //    public Tickets update(Long senderId,
