@@ -18,7 +18,6 @@ import java.util.Set;
 public class Tickets {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
     private Long id;
     @ManyToOne
     @JoinColumn(name = "priority_id")
@@ -63,11 +62,9 @@ public class Tickets {
             inverseJoinColumns = @JoinColumn(name = "equipment_id")
     )
     private Set<Equipment> equipment;
-    @Column
     private Integer status;
     @Column(name = "completed_word")
     private String completedWork;
-    @Column
     private String description;
     @Column(name = "improvement_reason")
     private String improvementReason;

@@ -14,13 +14,4 @@ public enum StatusesEnum {
     StatusesEnum(int value) {
         this.value = value;
     }
-
-    public static StatusesEnum getByValue(int findingValue) {
-        for (StatusesEnum status : StatusesEnum.values()) {
-            if (status.value == findingValue) {
-                return status;
-            }
-        }
-        return null;
-    }
 }

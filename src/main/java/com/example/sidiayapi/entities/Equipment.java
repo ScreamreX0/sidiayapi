@@ -15,8 +15,6 @@ import java.util.Set;
 public class Equipment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
     private Long id;
-    @Column
     private String name;
 }

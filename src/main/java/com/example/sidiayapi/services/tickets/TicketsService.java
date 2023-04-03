@@ -1,11 +1,15 @@
 package com.example.sidiayapi.services.tickets;
 
+import com.example.sidiayapi.dto.TicketData;
+import com.example.sidiayapi.entities.Facilities;
+import com.example.sidiayapi.entities.Kinds;
+import com.example.sidiayapi.entities.Priorities;
 import com.example.sidiayapi.entities.Tickets;
 import com.example.sidiayapi.enums.StatusesEnum;
 import com.example.sidiayapi.exceptions.NotFoundException;
 import com.example.sidiayapi.exceptions.NotYetImplementedException;
 import com.example.sidiayapi.exceptions.WrongParamsException;
-import com.example.sidiayapi.repositories.TicketsRepository;
+import com.example.sidiayapi.repositories.*;
 import com.example.sidiayapi.services.tickets.operations.*;
 import com.example.sidiayapi.utils.Logger;
 import com.example.sidiayapi.utils.Validator;
@@ -18,11 +22,32 @@ import java.util.*;
 
 @Service
 public class TicketsService {
-    TicketsRepository ticketsRepository;
-    final ObjectMapper mapper = new ObjectMapper();
+    private final TicketsRepository ticketsRepository;
+    private final EmployeesRepository employeesRepository;
+    private final EquipmentRepository equipmentRepository;
+    private final FacilitiesRepository facilitiesRepository;
+    private final KindsRepository kindsRepository;
+    private final PrioritiesRepository prioritiesRepository;
+    private final ServicesRepository servicesRepository;
+    private final TransportRepository transportRepository;
+    private final ObjectMapper mapper = new ObjectMapper();
 
-    public TicketsService(TicketsRepository ticketsRepository) {
+    public TicketsService(TicketsRepository ticketsRepository,
+                          EmployeesRepository employeesRepository,
+                          EquipmentRepository equipmentRepository,
+                          FacilitiesRepository facilitiesRepository,
+                          KindsRepository kindsRepository,
+                          PrioritiesRepository prioritiesRepository,
+                          ServicesRepository servicesRepository,
+                          TransportRepository transportRepository) {
         this.ticketsRepository = ticketsRepository;
+        this.employeesRepository = employeesRepository;
+        this.equipmentRepository = equipmentRepository;
+        this.facilitiesRepository = facilitiesRepository;
+        this.kindsRepository = kindsRepository;
+        this.prioritiesRepository = prioritiesRepository;
+        this.servicesRepository = servicesRepository;
+        this.transportRepository = transportRepository;
     }
 
     public List<Tickets> getByUserId(Long id) {
@@ -94,5 +119,18 @@ public class TicketsService {
             }
         }
         throw new NotYetImplementedException("Ticket status not yet handled");
+    }
+
+
+    public TicketData getData() {
+        return new TicketData(
+                employeesRepository.findAll(),
+                equipmentRepository.findAll(),
+                facilitiesRepository.findAll(),
+                kindsRepository.findAll(),
+                prioritiesRepository.findAll(),
+                servicesRepository.findAll(),
+                transportRepository.findAll()
+        );
     }
 }

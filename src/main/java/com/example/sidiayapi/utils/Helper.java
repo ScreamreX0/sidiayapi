@@ -2,6 +2,7 @@ package com.example.sidiayapi.utils;
 
 import com.example.sidiayapi.exceptions.NotYetImplementedException;
 import com.example.sidiayapi.exceptions.WrongParamsException;
+import com.google.gson.Gson;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,5 +30,9 @@ public class Helper {
             Logger.log("    ERROR. New ticket status is null");
             throw new WrongParamsException("    New ticket status is null");
         }
+    }
+
+    public static String convertObjectToString(Object object) {
+        return new Gson().toJson(object);
     }
 }

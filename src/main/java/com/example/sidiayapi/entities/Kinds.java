@@ -13,8 +13,6 @@ import lombok.Setter;
 public class Kinds {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
     private Long id;
-    @Column
     private String name;
 }

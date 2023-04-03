@@ -1,5 +1,6 @@
 package com.example.sidiayapi.controllers;
 
+import com.example.sidiayapi.dto.TicketData;
 import com.example.sidiayapi.entities.Tickets;
 import com.example.sidiayapi.repositories.TicketsRepository;
 import com.example.sidiayapi.services.tickets.TicketsService;
@@ -37,6 +38,12 @@ public class TicketsController {
     public ResponseEntity<Tickets> update(@PathVariable Long senderId,
                                           @RequestBody Tickets ticket) {
         return ticketsService.update(senderId, ticket);
+    }
+
+    // Ticket data - data that used in ticket creating, updating, filtering components.
+    @GetMapping("/get-data")
+    public ResponseEntity<TicketData> get() {
+        return new ResponseEntity<>(ticketsService.getData(), HttpStatus.OK);
     }
 }
 

@@ -13,10 +13,7 @@ import lombok.Setter;
 public class Priorities {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
     private Long id;
-    @Column
     private String name;
-    @Column
     private Integer value;
 }

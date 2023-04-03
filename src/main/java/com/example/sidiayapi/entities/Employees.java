@@ -15,14 +15,9 @@ import lombok.Setter;
 public class Employees {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
     private Long id;
-    @Column
     private String firstname;
-    @Column
     private String name;
-    @Column
     private String lastname;
-    @Column
     private String email;
 }
