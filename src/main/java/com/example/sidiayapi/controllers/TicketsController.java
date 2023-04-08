@@ -29,9 +29,8 @@ public class TicketsController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Object> add(@RequestBody Map<String, Object> ticket) {
-        ticketsService.add(ticket);
-        return new ResponseEntity<>(null, HttpStatus.OK);
+    public ResponseEntity<Tickets> add(@RequestBody Tickets ticket) {
+        return new ResponseEntity<>(ticketsService.add(ticket), HttpStatus.OK);
     }
 
     @PostMapping("/update/{senderId}")

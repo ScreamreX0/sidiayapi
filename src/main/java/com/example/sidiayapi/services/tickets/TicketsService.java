@@ -1,9 +1,6 @@
 package com.example.sidiayapi.services.tickets;
 
 import com.example.sidiayapi.dto.TicketData;
-import com.example.sidiayapi.entities.Facilities;
-import com.example.sidiayapi.entities.Kinds;
-import com.example.sidiayapi.entities.Priorities;
 import com.example.sidiayapi.entities.Tickets;
 import com.example.sidiayapi.enums.StatusesEnum;
 import com.example.sidiayapi.exceptions.NotFoundException;
@@ -23,17 +20,16 @@ import java.util.*;
 @Service
 public class TicketsService {
     private final TicketsRepository ticketsRepository;
-    private final EmployeesRepository employeesRepository;
+    private final UsersRepository usersRepository;
     private final EquipmentRepository equipmentRepository;
     private final FacilitiesRepository facilitiesRepository;
     private final KindsRepository kindsRepository;
     private final PrioritiesRepository prioritiesRepository;
     private final ServicesRepository servicesRepository;
     private final TransportRepository transportRepository;
-    private final ObjectMapper mapper = new ObjectMapper();
 
     public TicketsService(TicketsRepository ticketsRepository,
-                          EmployeesRepository employeesRepository,
+                          UsersRepository usersRepository,
                           EquipmentRepository equipmentRepository,
                           FacilitiesRepository facilitiesRepository,
                           KindsRepository kindsRepository,
@@ -41,7 +37,7 @@ public class TicketsService {
                           ServicesRepository servicesRepository,
                           TransportRepository transportRepository) {
         this.ticketsRepository = ticketsRepository;
-        this.employeesRepository = employeesRepository;
+        this.usersRepository = usersRepository;
         this.equipmentRepository = equipmentRepository;
         this.facilitiesRepository = facilitiesRepository;
         this.kindsRepository = kindsRepository;
@@ -61,40 +57,25 @@ public class TicketsService {
         return ticketsRepository.findTicketsByUserId(id);
     }
 
-    public void add(Map<String, Object> ticket) {
-        Tickets newTicket = mapper.convertValue(ticket, Tickets.class);
-
+    public Tickets add(Tickets ticket) {
         if (Validator.anyNull(
-                newTicket.getFacilities(),
-                newTicket.getEquipment(),
-                newTicket.getTransport(),
-                newTicket.getExecutorId(),
-                newTicket.getBrigades())
+                ticket.getFacilities(),
+                ticket.getService(),
+                ticket.getKind(),
+                ticket.getPlaneDate(),
+                ticket.getPriority(),
+                ticket.getExecutorId())
         ) {
-            newTicket.setStatus(StatusesEnum.NOT_FORMED.value);
+            ticket.setStatus(StatusesEnum.NOT_FORMED.value);
         } else {
-            newTicket.setStatus(StatusesEnum.NEW.value);
+            ticket.setStatus(StatusesEnum.NEW.value);
         }
 
-        ticketsRepository.save(newTicket);
+        return ticketsRepository.save(ticket);
     }
 
     public ResponseEntity<Tickets> update(Long senderId, Tickets newTicket) {
-        Logger.log("Checking ticket id..");
-        if (newTicket.getId() == null) {
-            Logger.log("Error. Ticket id is null.");
-            throw new NotFoundException("Ticket not found");
-        }
-
-        Logger.log("Searching for ticket in db..");
-        Optional<Tickets> ticketOptional = ticketsRepository.findById(newTicket.getId());
-        if (ticketOptional.isEmpty()) {
-            Logger.log("Error. Ticket not found");
-            throw new NotFoundException("Ticket not found");
-        }
-
-        Logger.log("Ticket found.");
-        Tickets ticket = ticketOptional.get();
+        Tickets ticket = checkTicketId(newTicket.getId());
 
         List<ITicketUpdateOperation> ticketUpdateOperations = Arrays.asList(
                 new TicketUpdateNotFormed(),
@@ -107,24 +88,20 @@ public class TicketsService {
                 new TicketUpdateForRevision()
         );
 
-        for (ITicketUpdateOperation operation : ticketUpdateOperations) {
-            if (operation.getStatus().value == ticket.getStatus()) {
-                Logger.log("Ticket status: " + newTicket.getStatus() + ". Executing update operation..");
-                return new ResponseEntity<>(operation.update(
-                        senderId,
-                        ticket,
-                        newTicket,
-                        ticketsRepository
-                ), HttpStatus.OK);
-            }
-        }
-        throw new NotYetImplementedException("Ticket status not yet handled");
+        ITicketUpdateOperation operation = ticketUpdateOperations
+                .stream()
+                .filter(op -> op.getStatus().value == ticket.getStatus())
+                .findFirst()
+                .orElseThrow(() -> new NotYetImplementedException("Ticket status not yet handled"));
+
+        Logger.log("Ticket status: " + newTicket.getStatus() + ". Executing update operation..");
+        return new ResponseEntity<>(operation.update(senderId, ticket, newTicket, ticketsRepository), HttpStatus.OK);
     }
 
 
     public TicketData getData() {
         return new TicketData(
-                employeesRepository.findAll(),
+                usersRepository.findAll(),
                 equipmentRepository.findAll(),
                 facilitiesRepository.findAll(),
                 kindsRepository.findAll(),
@@ -132,5 +109,20 @@ public class TicketsService {
                 servicesRepository.findAll(),
                 transportRepository.findAll()
         );
+    }
+
+    private Tickets checkTicketId(Long id) {
+        if (id == null) {
+            Logger.log("Error. Ticket id is null.");
+            throw new NotFoundException("Ticket not found");
+        }
+        Logger.log("Searching for ticket in db..");
+        Optional<Tickets> ticketOptional = ticketsRepository.findById(id);
+        if (ticketOptional.isEmpty()) {
+            Logger.log("Error. Ticket not found");
+            throw new NotFoundException("Ticket not found");
+        }
+        Logger.log("Ticket found.");
+        return ticketOptional.get();
     }
 }

@@ -6,6 +6,8 @@ import com.example.sidiayapi.repositories.TicketsRepository;
 import com.example.sidiayapi.utils.Logger;
 import com.example.sidiayapi.utils.Validator;
 
+import java.util.function.Consumer;
+
 
 public final class TicketUpdateNotFormed implements ITicketUpdateOperation {
     private final StatusesEnum status = StatusesEnum.NOT_FORMED;
@@ -16,36 +18,23 @@ public final class TicketUpdateNotFormed implements ITicketUpdateOperation {
                           Tickets newTicket,
                           TicketsRepository ticketsRepository) {
         Logger.log("    Updating fields that not null");
-        if (newTicket.getFacilities() != null) {
-            Logger.log("    Updating facilities..");
-            ticket.setFacilities(newTicket.getFacilities());
-        }
-        if (newTicket.getEquipment() != null) {
-            Logger.log("    Done. updating equipment..");
-            ticket.setEquipment(ticket.getEquipment());
-        }
-        if (newTicket.getTransport() != null) {
-            Logger.log("    Done. updating transport..");
-            ticket.setTransport(newTicket.getTransport());
-        }
-        if (newTicket.getBrigades() != null) {
-            Logger.log("    Done. updating brigades..");
-            ticket.setBrigades(newTicket.getBrigades());
-        }
-        if (newTicket.getExecutorId() != null) {
-            Logger.log("    Done. updating executor..");
-            ticket.setExecutorId(newTicket.getExecutorId());
-        }
 
-        Logger.log("    Done.");
-        Logger.log("    Checking all fields in the ticket for emptiness..");
+        updateTicketField(newTicket.getFacilities(), ticket::setFacilities, "facilities");
+        updateTicketField(newTicket.getService(), ticket::setService, "service");
+        updateTicketField(newTicket.getKind(), ticket::setKind, "kind");
+        updateTicketField(newTicket.getPlaneDate(), ticket::setPlaneDate, "plane date");
+        updateTicketField(newTicket.getPriority(), ticket::setPriority, "priority");
+        updateTicketField(newTicket.getExecutorId(), ticket::setExecutorId, "executor");
+
+        Logger.log("    Checking starred fields..");
         if (!Validator.anyNull(
                 ticket.getFacilities(),
-                ticket.getEquipment(),
-                ticket.getTransport(),
-                ticket.getExecutorId(),
-                ticket.getBrigades())
-        ) {
+                ticket.getService(),
+                ticket.getKind(),
+                ticket.getPlaneDate(),
+                ticket.getPriority(),
+                ticket.getExecutorId()
+        )) {
             Logger.log("    All fields are not null. Updating ticket status..");
             ticket.setStatus(StatusesEnum.NEW.value);
         } else {
@@ -54,8 +43,16 @@ public final class TicketUpdateNotFormed implements ITicketUpdateOperation {
         Logger.log("    Saving ticket..");
         return ticketsRepository.save(ticket);
     }
+
     @Override
     public StatusesEnum getStatus() {
         return status;
+    }
+
+    private <T> void updateTicketField(T newValue, Consumer<T> setter, String fieldName) {
+        if (newValue != null) {
+            Logger.log("    Updating " + fieldName + "..");
+            setter.accept(newValue);
+        }
     }
 }

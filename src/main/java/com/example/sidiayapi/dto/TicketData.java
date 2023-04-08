@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 public class TicketData {
-    List<Employees> employees;
+    List<Users> users;
     List<Equipment> equipment;
     List<Facilities> facilities;
     List<Kinds> kinds;
