@@ -1,13 +1,12 @@
 package com.example.sidiayapi.entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity(name = "Tickets")
@@ -31,17 +30,17 @@ public class Tickets {
     private Kinds kind;
     @ManyToOne
     @JoinColumn(name = "author_id")
-    private Users authorId;
+    private Users author_id;
     @ManyToOne
     @JoinColumn(name = "executor_id")
-    private Users executorId;
+    private Users executor_id;
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "tickets_brigades",
             joinColumns = @JoinColumn(name = "ticket_id"),
             inverseJoinColumns = @JoinColumn(name = "brigade_id")
     )
-    private Set<Users> brigades;
+    private Set<Users> brigade;
     @ManyToMany
     @JoinTable(
             name = "tickets_transport",
@@ -64,18 +63,11 @@ public class Tickets {
     )
     private Set<Equipment> equipment;
     private Integer status;
-    @Column(name = "completed_word")
-    private String completedWork;
+    private String completed_work;
+    private String name;
     private String description;
-    @Column(name = "improvement_reason")
-    private String improvementReason;
-    @Column(name = "creation_date")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
-    private Date creationDate;
-    @Column(name = "plane_date")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
-    private Date planeDate;
-    @Column(name = "closing_date")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
-    private Date closingDate;
+    private String improvement_reason;
+    private LocalDate creation_date;
+    private LocalDate plane_date;
+    private LocalDate closing_date;
 }

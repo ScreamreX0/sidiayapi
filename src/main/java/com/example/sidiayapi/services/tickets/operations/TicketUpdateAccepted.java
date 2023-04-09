@@ -2,7 +2,6 @@ package com.example.sidiayapi.services.tickets.operations;
 
 import com.example.sidiayapi.entities.Tickets;
 import com.example.sidiayapi.enums.StatusesEnum;
-import com.example.sidiayapi.exceptions.NotYetImplementedException;
 import com.example.sidiayapi.exceptions.WrongParamsException;
 import com.example.sidiayapi.repositories.TicketsRepository;
 import com.example.sidiayapi.utils.Helper;
@@ -31,12 +30,12 @@ public final class TicketUpdateAccepted implements ITicketUpdateOperation {
         Logger.log("    New ticket status: " + newTicket.getStatus());
 
         if (newTicket.getStatus() == StatusesEnum.COMPLETED.value) {
-            if (Validator.anyNull(newTicket.getCompletedWork(), newTicket.getClosingDate())) {
+            if (Validator.anyNull(newTicket.getCompleted_work(), newTicket.getClosing_date())) {
                 Logger.log("    ERROR. Completed work or closing date is null");
                 throw new WrongParamsException("Completed work or closing date is null");
             }
-            ticket.setCompletedWork(newTicket.getCompletedWork());
-            ticket.setClosingDate(newTicket.getClosingDate());
+            ticket.setCompleted_work(newTicket.getCompleted_work());
+            ticket.setClosing_date(newTicket.getClosing_date());
         }
 
         ticket.setStatus(newTicket.getStatus());

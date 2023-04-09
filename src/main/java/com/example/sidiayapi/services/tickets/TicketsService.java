@@ -10,11 +10,11 @@ import com.example.sidiayapi.repositories.*;
 import com.example.sidiayapi.services.tickets.operations.*;
 import com.example.sidiayapi.utils.Logger;
 import com.example.sidiayapi.utils.Validator;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -62,14 +62,16 @@ public class TicketsService {
                 ticket.getFacilities(),
                 ticket.getService(),
                 ticket.getKind(),
-                ticket.getPlaneDate(),
+                ticket.getPlane_date(),
                 ticket.getPriority(),
-                ticket.getExecutorId())
+                ticket.getExecutor_id())
         ) {
             ticket.setStatus(StatusesEnum.NOT_FORMED.value);
         } else {
             ticket.setStatus(StatusesEnum.NEW.value);
         }
+
+        ticket.setCreation_date(LocalDate.now());
 
         return ticketsRepository.save(ticket);
     }

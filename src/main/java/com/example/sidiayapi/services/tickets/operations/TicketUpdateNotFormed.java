@@ -22,18 +22,18 @@ public final class TicketUpdateNotFormed implements ITicketUpdateOperation {
         updateTicketField(newTicket.getFacilities(), ticket::setFacilities, "facilities");
         updateTicketField(newTicket.getService(), ticket::setService, "service");
         updateTicketField(newTicket.getKind(), ticket::setKind, "kind");
-        updateTicketField(newTicket.getPlaneDate(), ticket::setPlaneDate, "plane date");
+        updateTicketField(newTicket.getPlane_date(), ticket::setPlane_date, "plane date");
         updateTicketField(newTicket.getPriority(), ticket::setPriority, "priority");
-        updateTicketField(newTicket.getExecutorId(), ticket::setExecutorId, "executor");
+        updateTicketField(newTicket.getExecutor_id(), ticket::setExecutor_id, "executor");
 
         Logger.log("    Checking starred fields..");
         if (!Validator.anyNull(
                 ticket.getFacilities(),
                 ticket.getService(),
                 ticket.getKind(),
-                ticket.getPlaneDate(),
+                ticket.getPlane_date(),
                 ticket.getPriority(),
-                ticket.getExecutorId()
+                ticket.getExecutor_id()
         )) {
             Logger.log("    All fields are not null. Updating ticket status..");
             ticket.setStatus(StatusesEnum.NEW.value);
