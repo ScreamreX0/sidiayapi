@@ -1,5 +1,6 @@
 package com.example.sidiayapi.entities;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -30,9 +31,11 @@ public class Tickets {
     private Kinds kind;
     @ManyToOne
     @JoinColumn(name = "author_id")
+    @JsonAlias("author")
     private Users author_id;
     @ManyToOne
     @JoinColumn(name = "executor_id")
+    @JsonAlias("executor")
     private Users executor_id;
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
