@@ -16,10 +16,10 @@ public final class TicketUpdateAccepted implements ITicketUpdateOperation {
     private final StatusesEnum status = StatusesEnum.ACCEPTED;
 
     @Override
-    public Tickets update(Long senderId,
-                          Tickets ticket,
+    public Tickets update(Tickets ticket,
                           Tickets newTicket,
-                          TicketsRepository ticketsRepository) {
+                          TicketsRepository ticketsRepository,
+                          Long userId) {
         List<Integer> allowedNewStatuses = Arrays.asList(
                 StatusesEnum.COMPLETED.value,
                 StatusesEnum.SUSPENDED.value

@@ -7,14 +7,14 @@ import com.example.sidiayapi.utils.Helper;
 import com.example.sidiayapi.utils.Logger;
 
 
-public final class TicketUpdateStopped implements ITicketUpdateOperation {
+public final class TicketUpdateSuspended implements ITicketUpdateOperation {
     private final StatusesEnum status = StatusesEnum.SUSPENDED;
 
     @Override
-    public Tickets update(Long senderId,
-                          Tickets ticket,
+    public Tickets update(Tickets ticket,
                           Tickets newTicket,
-                          TicketsRepository ticketsRepository) {
+                          TicketsRepository ticketsRepository,
+                          Long userId) {
         Helper.checkNewTicketStatus(newTicket.getStatus());
 
         Logger.log("    New ticket status: " + newTicket.getStatus());

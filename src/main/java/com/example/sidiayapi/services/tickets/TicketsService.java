@@ -10,8 +10,6 @@ import com.example.sidiayapi.repositories.*;
 import com.example.sidiayapi.services.tickets.operations.*;
 import com.example.sidiayapi.utils.Logger;
 import com.example.sidiayapi.utils.Validator;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -76,7 +74,7 @@ public class TicketsService {
         return ticketsRepository.save(ticket);
     }
 
-    public ResponseEntity<Tickets> update(Long senderId, Tickets newTicket) {
+    public Tickets update(Tickets newTicket, Long userId) {
         Tickets ticket = checkTicketId(newTicket.getId());
 
         List<ITicketUpdateOperation> ticketUpdateOperations = Arrays.asList(
@@ -86,7 +84,7 @@ public class TicketsService {
                 new TicketUpdateClosed(),
                 new TicketUpdateDenied(),
                 new TicketUpdateCompleted(),
-                new TicketUpdateStopped(),
+                new TicketUpdateSuspended(),
                 new TicketUpdateForRevision()
         );
 
@@ -97,7 +95,7 @@ public class TicketsService {
                 .orElseThrow(() -> new NotYetImplementedException("Ticket status not yet handled"));
 
         Logger.log("Ticket status: " + newTicket.getStatus() + ". Executing update operation..");
-        return new ResponseEntity<>(operation.update(senderId, ticket, newTicket, ticketsRepository), HttpStatus.OK);
+        return operation.update(ticket, newTicket, ticketsRepository, userId);
     }
 
 

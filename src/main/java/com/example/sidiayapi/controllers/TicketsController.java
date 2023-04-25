@@ -33,10 +33,9 @@ public class TicketsController {
         return new ResponseEntity<>(ticketsService.add(ticket), HttpStatus.OK);
     }
 
-    @PostMapping("/update/{senderId}")
-    public ResponseEntity<Tickets> update(@PathVariable Long senderId,
-                                          @RequestBody Tickets ticket) {
-        return ticketsService.update(senderId, ticket);
+    @PostMapping("/update/{currentUserId}")
+    public ResponseEntity<Tickets> update(@RequestBody Tickets ticket, @PathVariable Long currentUserId) {
+        return new ResponseEntity<>(ticketsService.update(ticket, currentUserId), HttpStatus.OK);
     }
 
     // Ticket data - data that used in ticket creating, updating, filtering components.

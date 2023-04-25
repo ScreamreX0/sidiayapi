@@ -10,10 +10,10 @@ public final class TicketUpdateForRevision implements ITicketUpdateOperation {
     private final StatusesEnum status = StatusesEnum.FOR_REVISION;
 
     @Override
-    public Tickets update(Long senderId,
-                          Tickets ticket,
+    public Tickets update(Tickets ticket,
                           Tickets newTicket,
-                          TicketsRepository ticketsRepository) {
+                          TicketsRepository ticketsRepository,
+                          Long userId) {
         throw new NotYetImplementedException("Status: " + status.value + " not handled");
     }
     @Override
