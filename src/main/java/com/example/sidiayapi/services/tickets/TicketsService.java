@@ -75,7 +75,7 @@ public class TicketsService {
     }
 
     public Tickets update(Tickets newTicket, Long userId) {
-        Tickets ticket = checkTicketId(newTicket.getId());
+        Tickets ticket = findTicketById(newTicket.getId());
 
         List<ITicketUpdateOperation> ticketUpdateOperations = Arrays.asList(
                 new TicketUpdateNotFormed(),
@@ -94,7 +94,9 @@ public class TicketsService {
                 .findFirst()
                 .orElseThrow(() -> new NotYetImplementedException("Ticket status not yet handled"));
 
-        Logger.log("Ticket status: " + newTicket.getStatus() + ". Executing update operation..");
+        Logger.log("\nNew ticket status: " + newTicket.getStatus() + "."
+                + "\n   Found ticket status: " + ticket.getStatus()
+                + "\n   Executing update operation..");
         return operation.update(ticket, newTicket, ticketsRepository, userId);
     }
 
@@ -111,15 +113,12 @@ public class TicketsService {
         );
     }
 
-    private Tickets checkTicketId(Long id) {
-        if (id == null) {
-            Logger.log("Error. Ticket id is null.");
-            throw new NotFoundException("Ticket not found");
-        }
+    private Tickets findTicketById(Long id) {
+        if (id == null) throw new NotFoundException("Ticket not found");
         Logger.log("Searching for ticket in db..");
         Optional<Tickets> ticketOptional = ticketsRepository.findById(id);
         if (ticketOptional.isEmpty()) {
-            Logger.log("Error. Ticket not found");
+            Logger.log("Ticket not found");
             throw new NotFoundException("Ticket not found");
         }
         Logger.log("Ticket found.");
