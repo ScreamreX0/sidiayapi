@@ -2,6 +2,7 @@ package com.example.sidiayapi.entities;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,20 +23,23 @@ public class Tickets {
     private Long id;
     @ManyToOne
     @JoinColumn(name = "priority_id")
+    @JsonProperty("priority")
     private Priorities priority;
     @ManyToOne
     @JoinColumn(name = "service_id")
+    @JsonProperty("service")
     private Services service;
     @ManyToOne
     @JoinColumn(name = "kind_id")
+    @JsonProperty("kind")
     private Kinds kind;
     @ManyToOne
     @JoinColumn(name = "author_id")
-    @JsonAlias("author")
+    @JsonProperty("author")
     private Users author_id;
     @ManyToOne
     @JoinColumn(name = "executor_id")
-    @JsonAlias("executor")
+    @JsonProperty("executor")
     private Users executor_id;
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
