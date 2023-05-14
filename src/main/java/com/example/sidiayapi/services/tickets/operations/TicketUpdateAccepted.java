@@ -16,7 +16,6 @@ public final class TicketUpdateAccepted implements ITicketUpdateOperation {
                           TicketsRepository ticketsRepository,
                           Users sender) {
         Integer newTicketStatus = newTicket.getStatus();
-
         if (newTicketStatus == StatusesEnum.COMPLETED.value) {
             checkRequiredFields(newTicket.getCompletedWork());
             foundTicket.setCompletedWork(newTicket.getCompletedWork());

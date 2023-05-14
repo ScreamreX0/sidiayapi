@@ -2,12 +2,10 @@ package com.example.sidiayapi.services.tickets.operations;
 
 import com.example.sidiayapi.entities.Tickets;
 import com.example.sidiayapi.entities.Users;
+import com.example.sidiayapi.enums.JobTitlesEnum;
 import com.example.sidiayapi.enums.StatusesEnum;
 import com.example.sidiayapi.exceptions.NotYetImplementedException;
-import com.example.sidiayapi.exceptions.WrongParamsException;
 import com.example.sidiayapi.repositories.TicketsRepository;
-import com.example.sidiayapi.utils.Logger;
-import com.example.sidiayapi.utils.Validator;
 
 public final class TicketUpdateNew implements ITicketUpdateOperation {
     private final StatusesEnum status = StatusesEnum.NEW;
@@ -17,6 +15,7 @@ public final class TicketUpdateNew implements ITicketUpdateOperation {
                           Tickets newTicket,
                           TicketsRepository ticketsRepository,
                           Users sender) {
+        checkForPermissions(new JobTitlesEnum[]{JobTitlesEnum.DISPATCHER}, sender.getEmployee().getJobTitle());
         Integer newTicketStatus = newTicket.getStatus();
         if (newTicketStatus == StatusesEnum.EVALUATED.value) {
             checkRequiredFields(newTicket.getPriority(), newTicket.getAssessedValue(), newTicket.getAssessedValueDescription());

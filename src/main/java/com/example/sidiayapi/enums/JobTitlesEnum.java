@@ -16,7 +16,8 @@ public enum JobTitlesEnum {
     GEOPHYSICIST(13, DepartmentsEnum.GEOLOGY),
     HYDROGEOLOGIST(14, DepartmentsEnum.GEOLOGY),
     LABORATORY_ASSISTANT(15, DepartmentsEnum.GEOLOGY),
-    EXPLORATION_GEOLOGIST(16, DepartmentsEnum.GEOLOGY);
+    EXPLORATION_GEOLOGIST(16, DepartmentsEnum.GEOLOGY),
+    QUALITY_CONTROL_GEOLOGIST(17, DepartmentsEnum.GEOLOGY);
 
     public final int value;
     public final DepartmentsEnum department;

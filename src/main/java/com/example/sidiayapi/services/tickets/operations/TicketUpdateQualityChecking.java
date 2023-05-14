@@ -2,6 +2,7 @@ package com.example.sidiayapi.services.tickets.operations;
 
 import com.example.sidiayapi.entities.Tickets;
 import com.example.sidiayapi.entities.Users;
+import com.example.sidiayapi.enums.JobTitlesEnum;
 import com.example.sidiayapi.enums.StatusesEnum;
 import com.example.sidiayapi.exceptions.NotYetImplementedException;
 import com.example.sidiayapi.repositories.TicketsRepository;
@@ -16,8 +17,11 @@ public final class TicketUpdateQualityChecking implements ITicketUpdateOperation
                           Tickets newTicket,
                           TicketsRepository ticketsRepository,
                           Users sender) {
+        checkForPermissions(
+                new JobTitlesEnum[]{JobTitlesEnum.QUALITY_CONTROL_ENGINEER, JobTitlesEnum.QUALITY_CONTROL_GEOLOGIST},
+                sender.getEmployee().getJobTitle()
+        );
         Integer newTicketStatus = newTicket.getStatus();
-
         if (newTicketStatus == StatusesEnum.CLOSED.value) {
             foundTicket.setStatus(newTicket.getStatus());
             foundTicket.setStatus(StatusesEnum.CLOSED.value);

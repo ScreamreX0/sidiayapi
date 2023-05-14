@@ -2,15 +2,18 @@ package com.example.sidiayapi.services.tickets;
 
 import com.example.sidiayapi.dto.TicketData;
 import com.example.sidiayapi.entities.*;
+import com.example.sidiayapi.enums.JobTitlesEnum;
 import com.example.sidiayapi.enums.StatusesEnum;
 import com.example.sidiayapi.exceptions.NotFoundException;
 import com.example.sidiayapi.exceptions.NotYetImplementedException;
+import com.example.sidiayapi.exceptions.WrongCredentialsException;
 import com.example.sidiayapi.exceptions.WrongParamsException;
 import com.example.sidiayapi.repositories.*;
 import com.example.sidiayapi.services.UsersService;
 import com.example.sidiayapi.services.tickets.operations.*;
 import com.example.sidiayapi.utils.Logger;
 import com.example.sidiayapi.utils.Validator;
+import lombok.extern.java.Log;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -50,17 +53,27 @@ public class TicketsService {
         this.usersService = usersService;
     }
 
-    public List<Tickets> getByUserId(Long id) {
-        // TODO("Implement")
+    public List<Tickets> getByUserId(Long userId) {
+        Optional<Users> senderOptional = usersRepository.findById(userId);
+        if (senderOptional.isEmpty()) throw new WrongParamsException("User with this id not exists");
 
-        Logger.log("Validating id");
-        if (id < 0) {
-            throw new WrongParamsException();
+        Users sender = senderOptional.get();
+        Integer senderJobTitle = sender.getEmployee().getJobTitle();
+
+        Logger.log("Sender job title: " + senderJobTitle);
+
+        if (senderJobTitle == JobTitlesEnum.OPERATOR.value) {
+            return ticketsRepository.findOperatorTickets(userId);
+        } else if (senderJobTitle == JobTitlesEnum.DISPATCHER.value) {
+            return ticketsRepository.findDispatcherTickets();
+        } else if (senderJobTitle == JobTitlesEnum.SECTION_CHIEF.value) {
+            return ticketsRepository.findSectionChiefTickets();
+        } else if (senderJobTitle == JobTitlesEnum.QUALITY_CONTROL_ENGINEER.value
+                || senderJobTitle == JobTitlesEnum.QUALITY_CONTROL_GEOLOGIST.value) {
+            return ticketsRepository.findQualityControlSpecialistTickets(userId);
+        } else {
+            return ticketsRepository.findTicketsByExecutorId(userId);
         }
-        Logger.log("Id is correct");
-
-        Logger.log("Sending sql request..");
-        return ticketsRepository.findTicketsByUserId(id);
     }
 
     public Tickets add(Tickets ticket) {
@@ -75,6 +88,10 @@ public class TicketsService {
                 ticket.getService()
         )) {
             throw new WrongParamsException("Not all required fields are filled");
+        }
+
+        if (JobTitlesEnum.OPERATOR.value != ticket.getAuthor().getEmployee().getJobTitle()) {
+            throw new WrongCredentialsException("Access to perform this operation by the current user is denied");
         }
 
         newTicket.setStatus(StatusesEnum.NEW.value);

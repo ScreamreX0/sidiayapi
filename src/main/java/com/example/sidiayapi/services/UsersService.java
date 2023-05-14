@@ -41,10 +41,6 @@ public class UsersService {
         return user;
     }
 
-    public List<Users> get() {
-        return usersRepository.findAll();
-    }
-
     public Users findUserById(Long id) {
         String errorMessage = "Sender not found";
         if (id == null) throw new NotFoundException(errorMessage);
