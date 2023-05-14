@@ -18,4 +18,7 @@ public class Materials {
     private Long id;
 
     private String name;
+
+    @ManyToOne
+    private Sectors sector;
 }

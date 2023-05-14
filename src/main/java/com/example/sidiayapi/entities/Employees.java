@@ -27,5 +27,6 @@ public class Employees {
 
     private Integer jobTitle;
 
-    private Integer department;
+    @ManyToOne
+    private Sectors sector;
 }

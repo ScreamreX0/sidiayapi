@@ -6,21 +6,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
-
-@Entity(name = "Transport")
-@Table(name = "Transport")
+@Entity(name = "Fields")
+@Table(name = "Fields")
 @Getter
 @Setter
 @NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Transport {
+public class Fields {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
-
-    @ManyToOne
-    private Sectors sector;
 }
