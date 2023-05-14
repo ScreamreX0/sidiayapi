@@ -9,7 +9,7 @@ public final class TicketUpdateQualityChecking implements ITicketUpdateOperation
     private final StatusesEnum status = StatusesEnum.QUALITY_CHECKING;
 
     @Override
-    public Tickets update(Tickets ticket,
+    public Tickets update(Tickets foundTicket,
                           Tickets newTicket,
                           TicketsRepository ticketsRepository,
                           Long userId) {

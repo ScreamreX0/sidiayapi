@@ -12,43 +12,33 @@ public final class TicketUpdateNew implements ITicketUpdateOperation {
     private final StatusesEnum status = StatusesEnum.NEW;
 
     @Override
-    public Tickets update(Tickets ticket,
+    public Tickets update(Tickets foundTicket,
                           Tickets newTicket,
                           TicketsRepository ticketsRepository,
                           Long userId) {
-        throw new NotYetImplementedException("Status code " + getStatus().value + " not handled");
-//        Integer newTicketStatus = newTicket.getStatus();
-//        checkFields(userId, ticket, newTicketStatus);
-//        boolean isCurrentUserAnExecutor = isUserAnExecutor(userId, ticket);
-//
-//        if (isCurrentUserAnExecutor) {
-//            if (newTicketStatus == StatusesEnum.DENIED.value) {
-//                if (Validator.anyNull(
-//                        newTicket.getCompletedWork(),
-//                        newTicket.getClosingDate()
-//                )) {
-//                    String message = "Completed work or closing date is null";
-//                    Logger.log(message);
-//                    throw new WrongParamsException(message);
-//                }
-//
-//                updateTicketField(newTicketStatus, ticket::setStatus, "status");
-//                updateTicketField(newTicket.getCompletedWork(), ticket::setCompletedWork, "completed_work");
-//                updateTicketField(newTicket.getClosingDate(), ticket::setClosingDate, "closing_date");
-//                return ticketsRepository.save(ticket);
-//            } else if (newTicketStatus == StatusesEnum.ACCEPTED.value) {
-//                updateTicketField(newTicketStatus, ticket::setStatus, "status");
-//                return ticketsRepository.save(ticket);
-//            }
-//        } else {
-//            if (newTicketStatus == StatusesEnum.CLOSED.value) {
-//                updateTicketField(newTicketStatus, ticket::setStatus, "status");
-//                updateTicketField(newTicket.getClosingDate(), ticket::setClosingDate, "closing_date");
-//                return ticketsRepository.save(ticket);
-//            }
-//        }
-//
-//        throw new NotYetImplementedException(status.value, newTicketStatus, isCurrentUserAnExecutor);
+        Integer newTicketStatus = newTicket.getStatus();
+        checkParams(userId, foundTicket, newTicketStatus);
+
+        if (newTicketStatus == StatusesEnum.EVALUATED.value) {
+            if (Validator.anyNull(
+                    newTicket.getPriority(),
+                    newTicket.getAssessedValue(),
+                    newTicket.getAssessedValueDescription()
+            )) {
+                throw new WrongParamsException("Not all required fields are filled");
+            }
+
+            foundTicket.setPriority(newTicket.getPriority());
+            foundTicket.setAssessedValue(newTicket.getAssessedValue());
+            foundTicket.setAssessedValueDescription(newTicket.getAssessedValueDescription());
+            foundTicket.setStatus(StatusesEnum.EVALUATED.value);
+            return ticketsRepository.save(foundTicket);
+        } else if (newTicketStatus == StatusesEnum.CANCELED.value) {
+            foundTicket.setStatus(StatusesEnum.CANCELED.value);
+            return ticketsRepository.save(foundTicket);
+        } else {
+            throw new NotYetImplementedException("Not yet implemented. Current ticket status: " + getStatus());
+        }
     }
 
     @Override

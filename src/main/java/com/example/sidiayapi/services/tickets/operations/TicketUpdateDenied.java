@@ -10,7 +10,7 @@ public final class TicketUpdateDenied implements ITicketUpdateOperation {
     private final StatusesEnum status = StatusesEnum.DENIED;
 
     @Override
-    public Tickets update(Tickets ticket,
+    public Tickets update(Tickets foundTicket,
                           Tickets newTicket,
                           TicketsRepository ticketsRepository,
                           Long userId) {

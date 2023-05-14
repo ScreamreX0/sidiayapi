@@ -12,7 +12,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import java.util.function.Consumer;
 
 public interface ITicketUpdateOperation {
-    default Tickets update(Tickets ticket,
+    default Tickets update(Tickets foundTicket,
                            Tickets newTicket,
                            TicketsRepository ticketsRepository,
                            Long userId) {
@@ -21,16 +21,8 @@ public interface ITicketUpdateOperation {
 
     StatusesEnum getStatus();
 
-    default <T> void updateTicketField(T newValue, Consumer<T> setter, String fieldName) {
-        if (newValue != null) {
-            Logger.log("Updating " + fieldName + "..");
-            setter.accept(newValue);
-        }
-    }
-
-    default void checkFields(Long userId, Tickets ticket, Integer status) {
+    default void checkParams(Long userId, Tickets ticket, Integer status) {
         if (ticket == null) throw new DataIntegrityViolationException("Ticket is null");
-        if (ticket.getExecutors().isEmpty()) throw new DataIntegrityViolationException("Ticket has no executor");
         if (ticket.getAuthor() == null) throw new DataIntegrityViolationException("Ticket has no author");
         if (userId == null) throw new WrongCredentialsException("Current user is unauthorized");
         if (status == null) throw new WrongParamsException("New status is null");

@@ -23,6 +23,18 @@ public class TicketsService {
     private final FacilitiesRepository facilitiesRepository;
     private final TransportRepository transportRepository;
 
+    private final List<ITicketUpdateOperation> ticketUpdateOperations = Arrays.asList(
+            new TicketUpdateNew(),
+            new TicketUpdateEvaluated(),
+            new TicketUpdateDenied(),
+            new TicketUpdateAccepted(),
+            new TicketUpdateSuspended(),
+            new TicketUpdateCompleted(),
+            new TicketUpdateQualityChecking(),
+            new TicketUpdateClosed(),
+            new TicketUpdateForRevision()
+    );
+
     public TicketsService(TicketsRepository ticketsRepository,
                           UsersRepository usersRepository,
                           EquipmentRepository equipmentRepository,
@@ -36,6 +48,8 @@ public class TicketsService {
     }
 
     public List<Tickets> getByUserId(Long id) {
+        // TODO("Implement")
+
         Logger.log("Validating id");
         if (id < 0) {
             throw new WrongParamsException();
@@ -75,31 +89,16 @@ public class TicketsService {
     }
 
     public Tickets update(Tickets newTicket, Long userId) {
-        // TODO("implement ticket update")
-        Tickets ticket = findTicketById(newTicket.getId());
-
-        List<ITicketUpdateOperation> ticketUpdateOperations = Arrays.asList(
-                new TicketUpdateNew(),
-                new TicketUpdateEvaluated(),
-                new TicketUpdateDenied(),
-                new TicketUpdateAccepted(),
-                new TicketUpdateSuspended(),
-                new TicketUpdateCompleted(),
-                new TicketUpdateQualityChecking(),
-                new TicketUpdateClosed(),
-                new TicketUpdateForRevision()
-        );
-
+        Tickets foundTicket = findTicketById(newTicket.getId());
         ITicketUpdateOperation operation = ticketUpdateOperations
                 .stream()
-                .filter(op -> op.getStatus().value == ticket.getStatus())
+                .filter(itOperation -> itOperation.getStatus().value == foundTicket.getStatus())
                 .findFirst()
                 .orElseThrow(() -> new NotYetImplementedException("Ticket status not yet handled"));
-
         Logger.log("\nNew ticket status: " + newTicket.getStatus() + "."
-                + "\n   Found ticket status: " + ticket.getStatus()
+                + "\n   Found ticket status: " + foundTicket.getStatus()
                 + "\n   Executing update operation..");
-        return operation.update(ticket, newTicket, ticketsRepository, userId);
+        return operation.update(foundTicket, newTicket, ticketsRepository, userId);
     }
 
 

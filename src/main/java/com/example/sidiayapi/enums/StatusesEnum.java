@@ -10,7 +10,8 @@ public enum StatusesEnum {
     COMPLETED(7),
     QUALITY_CHECKING(8),
     CLOSED(9),
-    FOR_REVISION(10);
+    FOR_REVISION(10),
+    CANCELED(11);
 
     public final int value;
     StatusesEnum(int value) {

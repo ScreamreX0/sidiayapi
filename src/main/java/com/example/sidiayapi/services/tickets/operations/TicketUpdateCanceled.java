@@ -5,9 +5,8 @@ import com.example.sidiayapi.enums.StatusesEnum;
 import com.example.sidiayapi.exceptions.NotYetImplementedException;
 import com.example.sidiayapi.repositories.TicketsRepository;
 
-
-public final class TicketUpdateForRevision implements ITicketUpdateOperation {
-    private final StatusesEnum status = StatusesEnum.FOR_REVISION;
+public final class TicketUpdateCanceled implements ITicketUpdateOperation {
+    private final StatusesEnum status = StatusesEnum.CANCELED;
 
     @Override
     public Tickets update(Tickets foundTicket,
@@ -16,6 +15,7 @@ public final class TicketUpdateForRevision implements ITicketUpdateOperation {
                           Long userId) {
         throw new NotYetImplementedException("Status code " + getStatus().value + " not handled");
     }
+
     @Override
     public StatusesEnum getStatus() {
         return status;

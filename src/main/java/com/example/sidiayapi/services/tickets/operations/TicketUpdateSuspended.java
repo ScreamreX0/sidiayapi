@@ -10,7 +10,7 @@ public final class TicketUpdateSuspended implements ITicketUpdateOperation {
     private final StatusesEnum status = StatusesEnum.SUSPENDED;
 
     @Override
-    public Tickets update(Tickets ticket,
+    public Tickets update(Tickets foundTicket,
                           Tickets newTicket,
                           TicketsRepository ticketsRepository,
                           Long userId) {
