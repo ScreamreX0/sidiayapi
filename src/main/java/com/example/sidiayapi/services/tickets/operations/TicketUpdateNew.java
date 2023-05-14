@@ -18,8 +18,6 @@ public final class TicketUpdateNew implements ITicketUpdateOperation {
                           TicketsRepository ticketsRepository,
                           Users sender) {
         Integer newTicketStatus = newTicket.getStatus();
-        checkParams(foundTicket, newTicketStatus);
-
         if (newTicketStatus == StatusesEnum.EVALUATED.value) {
             checkRequiredFields(newTicket.getPriority(), newTicket.getAssessedValue(), newTicket.getAssessedValueDescription());
             foundTicket.setPriority(newTicket.getPriority());

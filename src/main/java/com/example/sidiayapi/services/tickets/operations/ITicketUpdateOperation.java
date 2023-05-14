@@ -19,12 +19,6 @@ public interface ITicketUpdateOperation {
 
     StatusesEnum getStatus();
 
-    default void checkParams(Tickets ticket, Integer status) {
-        if (ticket == null) throw new DataIntegrityViolationException("Ticket is null");
-        if (ticket.getAuthor() == null) throw new DataIntegrityViolationException("Ticket has no author");
-        if (status == null) throw new WrongParamsException("New status is null");
-    }
-
     default void checkRequiredFields(Object... values) {
         if (Validator.anyNull(values)) {
             throw new WrongParamsException("Not all required fields are filled");

@@ -11,6 +11,7 @@ import com.example.sidiayapi.services.UsersService;
 import com.example.sidiayapi.services.tickets.operations.*;
 import com.example.sidiayapi.utils.Logger;
 import com.example.sidiayapi.utils.Validator;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -94,6 +95,10 @@ public class TicketsService {
 
     public Tickets update(Tickets newTicket, Long userId) {
         Tickets foundTicket = findTicketById(newTicket.getId());
+
+        if (foundTicket.getAuthor() == null) throw new DataIntegrityViolationException("Ticket has no author");
+        if (newTicket.getStatus() == null) throw new WrongParamsException("New status is null");
+
         Users sender = usersService.findUserById(userId);
 
         ITicketUpdateOperation operation = ticketUpdateOperations
@@ -104,6 +109,7 @@ public class TicketsService {
         Logger.log("\nNew ticket status: " + newTicket.getStatus() + "."
                 + "\n   Found ticket status: " + foundTicket.getStatus()
                 + "\n   Executing update operation..");
+
         return operation.update(
                 foundTicket,
                 newTicket,

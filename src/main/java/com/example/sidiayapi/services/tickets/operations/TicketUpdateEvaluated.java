@@ -15,8 +15,6 @@ public final class TicketUpdateEvaluated implements ITicketUpdateOperation {
                           TicketsRepository ticketsRepository,
                           Users sender) {
         Integer newTicketStatus = newTicket.getStatus();
-        checkParams(foundTicket, newTicketStatus);
-
         if (newTicketStatus == StatusesEnum.SUSPENDED.value) {
             checkRequiredFields(newTicket.getReasonForSuspension());
             foundTicket.setReasonForSuspension(newTicket.getReasonForSuspension());
