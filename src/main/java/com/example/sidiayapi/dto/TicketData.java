@@ -1,8 +1,6 @@
 package com.example.sidiayapi.dto;
 
 import com.example.sidiayapi.entities.*;
-import com.example.sidiayapi.enums.KindsEnum;
-import com.example.sidiayapi.repositories.SectorsRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,5 +15,4 @@ public class TicketData {
     List<Equipment> equipment;
     List<Facilities> facilities;
     List<Transport> transport;
-    List<Materials> materials;
 }

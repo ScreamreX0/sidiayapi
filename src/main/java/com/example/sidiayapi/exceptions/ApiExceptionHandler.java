@@ -15,7 +15,7 @@ public class ApiExceptionHandler {
         return getResponseEntity("Wrong credentials exception", e.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler(value = WrongParamsException.class)
+    @ExceptionHandler(value = {WrongParamsException.class})
     public ResponseEntity<Response> handleWrongParamsException(WrongParamsException e) {
         return getResponseEntity("Wrong params exception", e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
     }

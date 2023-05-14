@@ -22,5 +22,5 @@ public class Equipment {
     private String name;
 
     @ManyToOne
-    private Sectors sector;
+    private Facilities facility;
 }

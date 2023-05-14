@@ -63,15 +63,6 @@ public class Tickets {
 
     @ManyToMany
     @JoinTable(
-            name = "tickets_materials",
-            joinColumns = @JoinColumn(name = "ticket_id"),
-            inverseJoinColumns = @JoinColumn(name = "material_id")
-    )
-    @JsonProperty("materials")
-    private Set<Materials> materials;
-
-    @ManyToMany
-    @JoinTable(
             name = "tickets_transport",
             joinColumns = @JoinColumn(name = "ticket_id"),
             inverseJoinColumns = @JoinColumn(name = "transport_id")

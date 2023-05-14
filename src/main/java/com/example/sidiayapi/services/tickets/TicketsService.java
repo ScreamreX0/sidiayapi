@@ -22,21 +22,17 @@ public class TicketsService {
     private final EquipmentRepository equipmentRepository;
     private final FacilitiesRepository facilitiesRepository;
     private final TransportRepository transportRepository;
-    private final MaterialsRepository materialsRepository;
 
     public TicketsService(TicketsRepository ticketsRepository,
                           UsersRepository usersRepository,
                           EquipmentRepository equipmentRepository,
                           FacilitiesRepository facilitiesRepository,
-                          TransportRepository transportRepository,
-                          MaterialsRepository materialsRepository,
-                          SectorsRepository sectorsRepository) {
+                          TransportRepository transportRepository) {
         this.ticketsRepository = ticketsRepository;
         this.usersRepository = usersRepository;
         this.equipmentRepository = equipmentRepository;
         this.facilitiesRepository = facilitiesRepository;
         this.transportRepository = transportRepository;
-        this.materialsRepository = materialsRepository;
     }
 
     public List<Tickets> getByUserId(Long id) {
@@ -51,24 +47,31 @@ public class TicketsService {
     }
 
     public Tickets add(Tickets ticket) {
-        // TODO("implement ticket addition")
-        throw new NotYetImplementedException("Adding new ticket not implemented");
-//        if (Validator.anyNull(
-//                ticket.getFacilities(),
-//                ticket.getService(),
-//                ticket.getKind(),
-//                ticket.getPlaneDate(),
-//                ticket.getPriority(),
-//                ticket.getExecutors())
-//        ) {
-//            ticket.setStatus(StatusesEnum.NOT_FORMED.value);
-//        } else {
-//            ticket.setStatus(StatusesEnum.NEW.value);
-//        }
-//
-//        ticket.setCreationDate(LocalDate.now());
-//
-//        return ticketsRepository.save(ticket);
+        Tickets newTicket = new Tickets();
+
+        if (Validator.anyNull(
+                ticket.getAuthor(),
+                ticket.getFacilities(),
+                ticket.getTicketName(),
+                ticket.getDescriptionOfWork(),
+                ticket.getKind(),
+                ticket.getService()
+        )) {
+            throw new WrongParamsException("Not all required fields are filled");
+        }
+
+        newTicket.setStatus(StatusesEnum.NEW.value);
+        newTicket.setAuthor(ticket.getAuthor());
+        newTicket.setCreationDate(LocalDate.now());
+        newTicket.setTicketName(ticket.getTicketName());
+        newTicket.setDescriptionOfWork(ticket.getDescriptionOfWork());
+        newTicket.setKind(ticket.getKind());
+        newTicket.setService(ticket.getService());
+        newTicket.setFacilities(ticket.getFacilities());
+        newTicket.setEquipment(ticket.getEquipment());
+        newTicket.setTransport(ticket.getTransport());
+
+        return ticketsRepository.save(newTicket);
     }
 
     public Tickets update(Tickets newTicket, Long userId) {
@@ -107,8 +110,7 @@ public class TicketsService {
                 usersRepository.findAll(),
                 equipmentRepository.findAll(),
                 facilitiesRepository.findAll(),
-                transportRepository.findAll(),
-                materialsRepository.findAll()
+                transportRepository.findAll()
         );
     }
 

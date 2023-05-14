@@ -2,7 +2,7 @@ package com.example.sidiayapi.enums;
 
 public enum JobTitlesEnum {
     SECTION_CHIEF(1, DepartmentsEnum.OIL_AND_GAS_PRODUCTION),
-    OIL_AND_GAS_DISPATCHER(2, DepartmentsEnum.OIL_AND_GAS_PRODUCTION),
+    DISPATCHER(2, null),
     OPERATOR(3, DepartmentsEnum.OIL_AND_GAS_PRODUCTION),
     DESIGN_ENGINEER(4, DepartmentsEnum.OIL_AND_GAS_PRODUCTION),
     PROCESS_ENGINEER(5, DepartmentsEnum.OIL_AND_GAS_PRODUCTION),

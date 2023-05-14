@@ -22,5 +22,5 @@ public class Transport {
     private String name;
 
     @ManyToOne
-    private Sectors sector;
+    private Fields field;
 }

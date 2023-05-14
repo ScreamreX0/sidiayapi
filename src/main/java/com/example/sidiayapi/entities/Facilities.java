@@ -20,5 +20,5 @@ public class Facilities {
     private String name;
 
     @ManyToOne
-    private Sectors sector;
+    private Fields field;
 }
