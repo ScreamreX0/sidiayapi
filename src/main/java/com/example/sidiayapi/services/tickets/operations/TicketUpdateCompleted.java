@@ -17,26 +17,16 @@ public final class TicketUpdateCompleted implements ITicketUpdateOperation {
                           Tickets newTicket,
                           TicketsRepository ticketsRepository,
                           Users sender) {
-        throw new NotYetImplementedException("Status code " + getStatus().value + " not handled");
-//        Integer newTicketStatus = newTicket.getStatus();
-//        checkFields(userId, ticket, newTicketStatus);
-//        boolean isCurrentUserAnExecutor = isUserAnExecutor(userId, ticket);
-//
-//        if (!isCurrentUserAnExecutor) {
-//            if (newTicketStatus == StatusesEnum.FOR_REVISION.value) {
-//                if (newTicket.getImprovementComment() == null) {
-//                    Logger.log("Improvement reason is null");
-//                    throw new WrongParamsException("Improvement reason is null");
-//                }
-//                ticket.setImprovementComment(newTicket.getImprovementComment());
-//            } else if (newTicketStatus == StatusesEnum.CLOSED.value) {
-//                updateTicketField(newTicketStatus, ticket::setStatus, "status");
-//                updateTicketField(newTicket.getClosingDate(), ticket::setClosingDate, "closing_date");
-//                return ticketsRepository.save(ticket);
-//            }
-//        }
-//
-//        throw new NotYetImplementedException(status.value, newTicketStatus, isCurrentUserAnExecutor);
+        Integer newTicketStatus = newTicket.getStatus();
+
+        if (newTicketStatus == StatusesEnum.QUALITY_CHECKING.value) {
+            checkRequiredFields(newTicket.getQualityControllers());
+            foundTicket.setQualityControllers(newTicket.getQualityControllers());
+            foundTicket.setStatus(StatusesEnum.QUALITY_CHECKING.value);
+            return ticketsRepository.save(foundTicket);
+        } else {
+            throw new NotYetImplementedException("Not yet implemented. Current ticket status: " + getStatus());
+        }
     }
 
     @Override
