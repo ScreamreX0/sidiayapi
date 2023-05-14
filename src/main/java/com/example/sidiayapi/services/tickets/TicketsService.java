@@ -29,12 +29,10 @@ public class TicketsService {
     private final List<ITicketUpdateOperation> ticketUpdateOperations = Arrays.asList(
             new TicketUpdateNew(),
             new TicketUpdateEvaluated(),
-            new TicketUpdateDenied(),
             new TicketUpdateAccepted(),
             new TicketUpdateSuspended(),
             new TicketUpdateCompleted(),
             new TicketUpdateQualityChecking(),
-            new TicketUpdateClosed(),
             new TicketUpdateForRevision()
     );
 

@@ -15,25 +15,26 @@ public final class TicketUpdateSuspended implements ITicketUpdateOperation {
                           Tickets newTicket,
                           TicketsRepository ticketsRepository,
                           Users sender) {
-        throw new NotYetImplementedException("Status code " + getStatus().value + " not handled");
-//        Integer newTicketStatus = newTicket.getStatus();
-//        checkFields(userId, ticket, newTicketStatus);
-//        boolean isCurrentUserAnExecutor = isUserAnExecutor(userId, ticket);
-//
-//        if (isCurrentUserAnExecutor) {
-//            if (newTicketStatus == StatusesEnum.ACCEPTED.value) {
-//                updateTicketField(newTicketStatus, ticket::setStatus, "status");
-//                return ticketsRepository.save(ticket);
-//            }
-//        } else {
-//            if (newTicketStatus == StatusesEnum.CLOSED.value) {
-//                updateTicketField(newTicketStatus, ticket::setStatus, "status");
-//                updateTicketField(newTicket.getClosingDate(), ticket::setClosingDate, "closing_date");
-//                return ticketsRepository.save(ticket);
-//            }
-//        }
-//
-//        throw new NotYetImplementedException(status.value, newTicketStatus, isCurrentUserAnExecutor);
+        Integer newTicketStatus = newTicket.getStatus();
+        if (newTicketStatus == StatusesEnum.ACCEPTED.value) {
+            checkRequiredFields(newTicket.getExecutors(), newTicket.getPlaneDate());
+            foundTicket.setExecutors(newTicket.getExecutors());
+            foundTicket.setPlaneDate(newTicket.getPlaneDate());
+            foundTicket.setStatus(StatusesEnum.ACCEPTED.value);
+            return ticketsRepository.save(foundTicket);
+        } else if (newTicketStatus == StatusesEnum.REJECTED.value) {
+            checkRequiredFields(newTicket.getReasonForRejection());
+            foundTicket.setReasonForRejection(newTicket.getReasonForRejection());
+            foundTicket.setStatus(StatusesEnum.REJECTED.value);
+            return ticketsRepository.save(foundTicket);
+        } else if (newTicketStatus == StatusesEnum.CANCELED.value) {
+            checkRequiredFields(newTicket.getReasonForCancellation());
+            foundTicket.setReasonForCancellation(newTicket.getReasonForCancellation());
+            foundTicket.setStatus(StatusesEnum.CANCELED.value);
+            return ticketsRepository.save(foundTicket);
+        } else {
+            throw new NotYetImplementedException("Not yet implemented. Current ticket status: " + getStatus());
+        }
     }
 
     @Override
