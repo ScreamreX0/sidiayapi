@@ -84,6 +84,10 @@ public class Tickets {
     @JsonProperty("reason_for_cancellation")
     private String reasonForCancellation;
 
+    @Column(name = "reason_for_rejection")
+    @JsonProperty("reason_for_rejection")
+    private String reasonForRejection;
+
     @ManyToMany
     @JoinTable(
             name = "tickets_executors",

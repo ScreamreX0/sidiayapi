@@ -4,7 +4,7 @@ public enum StatusesEnum {
     NOT_FORMED(1),
     NEW(2),
     EVALUATED(3),
-    DENIED(4),
+    REJECTED(4),
     ACCEPTED(5),
     SUSPENDED(6),
     COMPLETED(7),

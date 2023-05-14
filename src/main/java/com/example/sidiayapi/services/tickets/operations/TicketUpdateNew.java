@@ -21,20 +21,15 @@ public final class TicketUpdateNew implements ITicketUpdateOperation {
         checkParams(foundTicket, newTicketStatus);
 
         if (newTicketStatus == StatusesEnum.EVALUATED.value) {
-            if (Validator.anyNull(
-                    newTicket.getPriority(),
-                    newTicket.getAssessedValue(),
-                    newTicket.getAssessedValueDescription()
-            )) {
-                throw new WrongParamsException("Not all required fields are filled");
-            }
-
+            checkRequiredFields(newTicket.getPriority(), newTicket.getAssessedValue(), newTicket.getAssessedValueDescription());
             foundTicket.setPriority(newTicket.getPriority());
             foundTicket.setAssessedValue(newTicket.getAssessedValue());
             foundTicket.setAssessedValueDescription(newTicket.getAssessedValueDescription());
             foundTicket.setStatus(StatusesEnum.EVALUATED.value);
             return ticketsRepository.save(foundTicket);
         } else if (newTicketStatus == StatusesEnum.CANCELED.value) {
+            checkRequiredFields(newTicket.getReasonForCancellation());
+            foundTicket.setReasonForCancellation(newTicket.getReasonForCancellation());
             foundTicket.setStatus(StatusesEnum.CANCELED.value);
             return ticketsRepository.save(foundTicket);
         } else {

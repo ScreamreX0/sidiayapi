@@ -1,6 +1,7 @@
 package com.example.sidiayapi.services.tickets.operations;
 
 import com.example.sidiayapi.entities.Tickets;
+import com.example.sidiayapi.entities.Users;
 import com.example.sidiayapi.enums.StatusesEnum;
 import com.example.sidiayapi.exceptions.NotYetImplementedException;
 import com.example.sidiayapi.repositories.TicketsRepository;
@@ -13,7 +14,7 @@ public final class TicketUpdateClosed implements ITicketUpdateOperation {
     public Tickets update(Tickets foundTicket,
                           Tickets newTicket,
                           TicketsRepository ticketsRepository,
-                          Long userId) {
+                          Users sender) {
         throw new NotYetImplementedException("Status code " + getStatus().value + " not handled");
     }
     @Override
