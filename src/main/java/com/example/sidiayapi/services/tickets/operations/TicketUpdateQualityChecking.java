@@ -6,6 +6,8 @@ import com.example.sidiayapi.enums.StatusesEnum;
 import com.example.sidiayapi.exceptions.NotYetImplementedException;
 import com.example.sidiayapi.repositories.TicketsRepository;
 
+import java.time.LocalDate;
+
 public final class TicketUpdateQualityChecking implements ITicketUpdateOperation {
     private final StatusesEnum status = StatusesEnum.QUALITY_CHECKING;
 
@@ -14,7 +16,21 @@ public final class TicketUpdateQualityChecking implements ITicketUpdateOperation
                           Tickets newTicket,
                           TicketsRepository ticketsRepository,
                           Users sender) {
-        throw new NotYetImplementedException("Status code " + getStatus().value + " not handled");
+        Integer newTicketStatus = newTicket.getStatus();
+
+        if (newTicketStatus == StatusesEnum.CLOSED.value) {
+            foundTicket.setStatus(newTicket.getStatus());
+            foundTicket.setStatus(StatusesEnum.CLOSED.value);
+            foundTicket.setClosingDate(LocalDate.now());
+            return ticketsRepository.save(foundTicket);
+        } else if (newTicketStatus == StatusesEnum.FOR_REVISION.value) {
+            checkRequiredFields(newTicket.getImprovementComment());
+            foundTicket.setImprovementComment(newTicket.getImprovementComment());
+            foundTicket.setStatus(StatusesEnum.FOR_REVISION.value);
+            return ticketsRepository.save(foundTicket);
+        } else {
+            throw new NotYetImplementedException("Not yet implemented. Current ticket status: " + getStatus());
+        }
     }
 
     @Override
