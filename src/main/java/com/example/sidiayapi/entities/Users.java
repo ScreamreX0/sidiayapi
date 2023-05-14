@@ -17,11 +17,15 @@ public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @OneToOne
     @JoinColumn(name = "employee_id")
     @JsonProperty("employee")
     private Employees employee;
+
     private String password;
+
     private String phone;
+
     private String photo;
 }

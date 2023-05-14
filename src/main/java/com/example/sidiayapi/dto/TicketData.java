@@ -1,6 +1,7 @@
 package com.example.sidiayapi.dto;
 
 import com.example.sidiayapi.entities.*;
+import com.example.sidiayapi.enums.KindsEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,8 +15,8 @@ public class TicketData {
     List<Users> users;
     List<Equipment> equipment;
     List<Facilities> facilities;
-    List<Kinds> kinds;
-    List<Priorities> priorities;
-    List<Services> services;
+    List<Integer> kinds;
+    List<Integer> priorities;
+    List<Integer> services;
     List<Transport> transport;
 }

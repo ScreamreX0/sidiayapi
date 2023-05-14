@@ -16,8 +16,17 @@ public class Employees {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String firstname;
+
     private String name;
+
     private String lastname;
+
     private String email;
+
+    private Integer jobTitle;
+
+    @ManyToOne
+    private Departments department;
 }
