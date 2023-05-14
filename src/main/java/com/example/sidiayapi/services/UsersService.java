@@ -1,6 +1,8 @@
 package com.example.sidiayapi.services;
 
+import com.example.sidiayapi.entities.Tickets;
 import com.example.sidiayapi.entities.Users;
+import com.example.sidiayapi.exceptions.NotFoundException;
 import com.example.sidiayapi.exceptions.WrongCredentialsException;
 import com.example.sidiayapi.models.Credentials;
 import com.example.sidiayapi.repositories.UsersRepository;
@@ -9,6 +11,7 @@ import com.example.sidiayapi.utils.Validator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsersService {
@@ -40,6 +43,19 @@ public class UsersService {
 
     public List<Users> get() {
         return usersRepository.findAll();
+    }
+
+    public Users findUserById(Long id) {
+        String errorMessage = "Sender not found";
+        if (id == null) throw new NotFoundException(errorMessage);
+        Logger.log("Searching for user in db..");
+        Optional<Users> userOptional = usersRepository.findById(id);
+        if (userOptional.isEmpty()) {
+            Logger.log(errorMessage);
+            throw new NotFoundException(errorMessage);
+        }
+        Logger.log("User found.");
+        return userOptional.get();
     }
 }
 

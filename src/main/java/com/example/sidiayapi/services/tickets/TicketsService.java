@@ -7,6 +7,7 @@ import com.example.sidiayapi.exceptions.NotFoundException;
 import com.example.sidiayapi.exceptions.NotYetImplementedException;
 import com.example.sidiayapi.exceptions.WrongParamsException;
 import com.example.sidiayapi.repositories.*;
+import com.example.sidiayapi.services.UsersService;
 import com.example.sidiayapi.services.tickets.operations.*;
 import com.example.sidiayapi.utils.Logger;
 import com.example.sidiayapi.utils.Validator;
@@ -22,6 +23,7 @@ public class TicketsService {
     private final EquipmentRepository equipmentRepository;
     private final FacilitiesRepository facilitiesRepository;
     private final TransportRepository transportRepository;
+    private final UsersService usersService;
 
     private final List<ITicketUpdateOperation> ticketUpdateOperations = Arrays.asList(
             new TicketUpdateNew(),
@@ -39,12 +41,14 @@ public class TicketsService {
                           UsersRepository usersRepository,
                           EquipmentRepository equipmentRepository,
                           FacilitiesRepository facilitiesRepository,
-                          TransportRepository transportRepository) {
+                          TransportRepository transportRepository,
+                          UsersService usersService) {
         this.ticketsRepository = ticketsRepository;
         this.usersRepository = usersRepository;
         this.equipmentRepository = equipmentRepository;
         this.facilitiesRepository = facilitiesRepository;
         this.transportRepository = transportRepository;
+        this.usersService = usersService;
     }
 
     public List<Tickets> getByUserId(Long id) {
@@ -90,6 +94,8 @@ public class TicketsService {
 
     public Tickets update(Tickets newTicket, Long userId) {
         Tickets foundTicket = findTicketById(newTicket.getId());
+        Users sender = usersService.findUserById(userId);
+
         ITicketUpdateOperation operation = ticketUpdateOperations
                 .stream()
                 .filter(itOperation -> itOperation.getStatus().value == foundTicket.getStatus())
@@ -98,7 +104,12 @@ public class TicketsService {
         Logger.log("\nNew ticket status: " + newTicket.getStatus() + "."
                 + "\n   Found ticket status: " + foundTicket.getStatus()
                 + "\n   Executing update operation..");
-        return operation.update(foundTicket, newTicket, ticketsRepository, userId);
+        return operation.update(
+                foundTicket,
+                newTicket,
+                ticketsRepository,
+                sender
+        );
     }
 
 

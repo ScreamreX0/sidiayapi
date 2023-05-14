@@ -1,6 +1,7 @@
 package com.example.sidiayapi.services.tickets.operations;
 
 import com.example.sidiayapi.entities.Tickets;
+import com.example.sidiayapi.entities.Users;
 import com.example.sidiayapi.enums.StatusesEnum;
 import com.example.sidiayapi.exceptions.NotYetImplementedException;
 import com.example.sidiayapi.exceptions.WrongParamsException;
@@ -15,9 +16,9 @@ public final class TicketUpdateNew implements ITicketUpdateOperation {
     public Tickets update(Tickets foundTicket,
                           Tickets newTicket,
                           TicketsRepository ticketsRepository,
-                          Long userId) {
+                          Users sender) {
         Integer newTicketStatus = newTicket.getStatus();
-        checkParams(userId, foundTicket, newTicketStatus);
+        checkParams(foundTicket, newTicketStatus);
 
         if (newTicketStatus == StatusesEnum.EVALUATED.value) {
             if (Validator.anyNull(
