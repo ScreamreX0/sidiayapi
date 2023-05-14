@@ -26,10 +26,12 @@ public final class TicketUpdateEvaluated implements ITicketUpdateOperation {
             checkRequiredFields(newTicket.getExecutors(), newTicket.getPlaneDate());
             foundTicket.setExecutors(newTicket.getExecutors());
             foundTicket.setPlaneDate(newTicket.getPlaneDate());
+            foundTicket.setStatus(StatusesEnum.ACCEPTED.value);
             return ticketsRepository.save(foundTicket);
         } else if (newTicketStatus == StatusesEnum.REJECTED.value) {
             checkRequiredFields(newTicket.getReasonForRejection());
             foundTicket.setReasonForRejection(newTicket.getReasonForRejection());
+            foundTicket.setStatus(StatusesEnum.REJECTED.value);
             return ticketsRepository.save(foundTicket);
         } else if (newTicketStatus == StatusesEnum.CANCELED.value) {
             checkRequiredFields(newTicket.getReasonForCancellation());
