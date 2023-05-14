@@ -15,7 +15,21 @@ public final class TicketUpdateForRevision implements ITicketUpdateOperation {
                           Tickets newTicket,
                           TicketsRepository ticketsRepository,
                           Users sender) {
-        throw new NotYetImplementedException("Status code " + getStatus().value + " not handled");
+        Integer newTicketStatus = newTicket.getStatus();
+        if (newTicketStatus == StatusesEnum.ACCEPTED.value) {
+            checkRequiredFields(newTicket.getExecutors(), newTicket.getPlaneDate());
+            foundTicket.setExecutors(newTicket.getExecutors());
+            foundTicket.setPlaneDate(newTicket.getPlaneDate());
+            foundTicket.setStatus(StatusesEnum.ACCEPTED.value);
+            return ticketsRepository.save(foundTicket);
+        } else if (newTicketStatus == StatusesEnum.REJECTED.value) {
+            checkRequiredFields(newTicket.getReasonForRejection());
+            foundTicket.setReasonForRejection(newTicket.getReasonForRejection());
+            foundTicket.setStatus(StatusesEnum.REJECTED.value);
+            return ticketsRepository.save(foundTicket);
+        } else {
+            throw new NotYetImplementedException("Not yet implemented. Current ticket status: " + getStatus());
+        }
     }
     @Override
     public StatusesEnum getStatus() {
