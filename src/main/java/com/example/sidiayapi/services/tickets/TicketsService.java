@@ -3,6 +3,7 @@ package com.example.sidiayapi.services.tickets;
 import com.example.sidiayapi.dto.TicketData;
 import com.example.sidiayapi.entities.*;
 import com.example.sidiayapi.enums.JobTitlesEnum;
+import com.example.sidiayapi.enums.ServicesEnum;
 import com.example.sidiayapi.enums.StatusesEnum;
 import com.example.sidiayapi.exceptions.NotFoundException;
 import com.example.sidiayapi.exceptions.NotYetImplementedException;
@@ -13,12 +14,12 @@ import com.example.sidiayapi.services.UsersService;
 import com.example.sidiayapi.services.tickets.operations.*;
 import com.example.sidiayapi.utils.Logger;
 import com.example.sidiayapi.utils.Validator;
-import lombok.extern.java.Log;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class TicketsService {
@@ -58,22 +59,23 @@ public class TicketsService {
         if (senderOptional.isEmpty()) throw new WrongParamsException("User with this id not exists");
 
         Users sender = senderOptional.get();
-        Integer senderJobTitle = sender.getEmployee().getJobTitle();
+        Long senderField = sender.getEmployee().getSubdivision().getField().getId();
 
-        Logger.log("Sender job title: " + senderJobTitle);
+        JobTitlesEnum senderJobTitle = JobTitlesEnum.getByValue(sender.getEmployee().getJobTitle());
+        if (senderJobTitle == null) throw new NotYetImplementedException("This job title not handled yet");
 
-        if (senderJobTitle == JobTitlesEnum.OPERATOR.value) {
-            return ticketsRepository.findOperatorTickets(userId);
-        } else if (senderJobTitle == JobTitlesEnum.DISPATCHER.value) {
-            return ticketsRepository.findDispatcherTickets();
-        } else if (senderJobTitle == JobTitlesEnum.SECTION_CHIEF.value) {
-            return ticketsRepository.findSectionChiefTickets();
-        } else if (senderJobTitle == JobTitlesEnum.QUALITY_CONTROL_ENGINEER.value
-                || senderJobTitle == JobTitlesEnum.QUALITY_CONTROL_GEOLOGIST.value) {
-            return ticketsRepository.findQualityControlSpecialistTickets(userId);
-        } else {
-            return ticketsRepository.findTicketsByExecutorId(userId);
-        }
+        Logger.log("Sender job_title_id: " + senderJobTitle);
+        Logger.log("Sender field_id: " + senderField);
+
+        return switch (senderJobTitle) {
+            case OPERATOR -> ticketsRepository.findOperatorTickets(userId);
+            case DISPATCHER -> ticketsRepository.findDispatcherTickets(senderField);
+            case SECTION_CHIEF -> ticketsRepository.findSectionChiefTickets(senderField);
+            case CHIEF_ENGINEER -> ticketsRepository.findChiefEngineerTickets(senderField);
+            case CHIEF_GEOLOGIST -> ticketsRepository.findChiefGeologistTickets(senderField);
+            case QUALITY_CONTROLLER -> ticketsRepository.findQualityControlSpecialistTickets(userId, senderField);
+            default -> ticketsRepository.findTicketsByExecutorId(userId, senderField);
+        };
     }
 
     public Tickets add(Tickets ticket) {
@@ -104,6 +106,7 @@ public class TicketsService {
         newTicket.setFacilities(ticket.getFacilities());
         newTicket.setEquipment(ticket.getEquipment());
         newTicket.setTransport(ticket.getTransport());
+        newTicket.setField(ticket.getAuthor().getEmployee().getSubdivision().getField());
 
         return ticketsRepository.save(newTicket);
     }
@@ -135,7 +138,28 @@ public class TicketsService {
 
 
     public TicketData getData(Long userId) {
-        // TODO("implement ticket data selection by user id")
+        // TODO("Implement")
+//        Optional<Users> senderOptional = usersRepository.findById(userId);
+//        if (senderOptional.isEmpty()) throw new WrongParamsException("User with this id not exists");
+//
+//        Users sender = senderOptional.get();
+//        Integer senderJobTitle = sender.getEmployee().getJobTitle();
+//        Long senderField = sender.getEmployee().getSubdivision().getField().getId();
+//
+//        Logger.log("Sender job_title_id and field_id: " + senderJobTitle + " " + senderField);
+//
+//        if (senderJobTitle == JobTitlesEnum.OPERATOR.value) {
+//            return ticketsRepository.findOperatorTickets(userId);
+//        } else if (senderJobTitle == JobTitlesEnum.DISPATCHER.value) {
+//            return ticketsRepository.findDispatcherTickets();
+//        } else if (senderJobTitle == JobTitlesEnum.SECTION_CHIEF.value) {
+//            return ticketsRepository.findSectionChiefTickets();
+//        } else if (senderJobTitle == JobTitlesEnum.QUALITY_CONTROL_ENGINEER.value
+//                || senderJobTitle == JobTitlesEnum.QUALITY_CONTROL_GEOLOGIST.value) {
+//            return ticketsRepository.findQualityControlSpecialistTickets(userId);
+//        } else {
+//            return ticketsRepository.findTicketsByExecutorId(userId);
+//        }
 
         return new TicketData(
                 usersRepository.findAll(),

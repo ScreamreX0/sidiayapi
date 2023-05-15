@@ -2,7 +2,6 @@ package com.example.sidiayapi.controllers;
 
 import com.example.sidiayapi.dto.TicketData;
 import com.example.sidiayapi.entities.Tickets;
-import com.example.sidiayapi.repositories.TicketsRepository;
 import com.example.sidiayapi.services.tickets.TicketsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +14,9 @@ import java.util.List;
 @RequestMapping("/tickets")
 public class TicketsController {
     TicketsService ticketsService;
-    TicketsRepository ticketsRepository;
 
-    public TicketsController(TicketsService ticketsService, TicketsRepository ticketsRepository) {
+    public TicketsController(TicketsService ticketsService) {
         this.ticketsService = ticketsService;
-        this.ticketsRepository = ticketsRepository;
     }
 
     @GetMapping("/get-by-id/{id}")

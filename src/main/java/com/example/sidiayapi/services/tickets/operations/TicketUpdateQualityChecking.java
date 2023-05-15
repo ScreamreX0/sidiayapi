@@ -17,10 +17,7 @@ public final class TicketUpdateQualityChecking implements ITicketUpdateOperation
                           Tickets newTicket,
                           TicketsRepository ticketsRepository,
                           Users sender) {
-        checkForPermissions(
-                new JobTitlesEnum[]{JobTitlesEnum.QUALITY_CONTROL_ENGINEER, JobTitlesEnum.QUALITY_CONTROL_GEOLOGIST},
-                sender.getEmployee().getJobTitle()
-        );
+        checkForPermissions(new JobTitlesEnum[]{JobTitlesEnum.QUALITY_CONTROLLER}, sender.getEmployee().getJobTitle());
         Integer newTicketStatus = newTicket.getStatus();
         if (newTicketStatus == StatusesEnum.CLOSED.value) {
             foundTicket.setStatus(newTicket.getStatus());

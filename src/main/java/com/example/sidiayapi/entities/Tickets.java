@@ -28,6 +28,11 @@ public class Tickets {
     @JsonProperty("author")
     private Users author;
 
+    @ManyToOne
+    @JoinColumn(name = "field")
+    @JsonProperty("field")
+    private Fields field;
+
     @Column(name = "creation_date")
     @JsonProperty("creation_date")
     private LocalDate creationDate;

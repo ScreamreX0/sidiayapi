@@ -1,6 +1,5 @@
 package com.example.sidiayapi.services;
 
-import com.example.sidiayapi.entities.Tickets;
 import com.example.sidiayapi.entities.Users;
 import com.example.sidiayapi.exceptions.NotFoundException;
 import com.example.sidiayapi.exceptions.WrongCredentialsException;
@@ -10,7 +9,6 @@ import com.example.sidiayapi.utils.Logger;
 import com.example.sidiayapi.utils.Validator;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
