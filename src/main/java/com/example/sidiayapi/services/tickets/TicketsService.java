@@ -24,7 +24,6 @@ import java.util.*;
 public class TicketsService {
     private final TicketsRepository ticketsRepository;
     private final UsersRepository usersRepository;
-    private final EquipmentRepository equipmentRepository;
     private final FacilitiesRepository facilitiesRepository;
     private final TransportRepository transportRepository;
     private final UsersService usersService;
@@ -41,13 +40,11 @@ public class TicketsService {
 
     public TicketsService(TicketsRepository ticketsRepository,
                           UsersRepository usersRepository,
-                          EquipmentRepository equipmentRepository,
                           FacilitiesRepository facilitiesRepository,
                           TransportRepository transportRepository,
                           UsersService usersService) {
         this.ticketsRepository = ticketsRepository;
         this.usersRepository = usersRepository;
-        this.equipmentRepository = equipmentRepository;
         this.facilitiesRepository = facilitiesRepository;
         this.transportRepository = transportRepository;
         this.usersService = usersService;
@@ -183,16 +180,8 @@ public class TicketsService {
         };
     }
 
-    public List<Tickets> getHistory() {
-        return null;
-        // TODO
-
-        // История заявок - заявки, с которыми пользователь уже работал.
-        // Ничего изменять нельзя. Можно отслеживать заявку.
-
-        //Диспетчер.
-        //Назначающий исполнителей.
-        //Назначающий проверяющих.
+    public List<Tickets> getHistory(Long userId) {
+        return ticketsRepository.findTicketsHistory(userId);
     }
 
     private Tickets findTicketById(Long id) {

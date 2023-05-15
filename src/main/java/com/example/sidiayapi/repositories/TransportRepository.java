@@ -14,6 +14,6 @@ public interface TransportRepository extends JpaRepository<Transport, Long> {
             SELECT *
             FROM transport t
             WHERE t.field_id = :field
-            """)
+            """, nativeQuery = true)
     List<Transport> findByField(@Param("field") Long field);
 }

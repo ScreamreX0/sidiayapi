@@ -38,5 +38,10 @@ public class TicketsController {
     public ResponseEntity<TicketData> getData(@PathVariable Long currentUserId) {
         return new ResponseEntity<>(ticketsService.getData(currentUserId), HttpStatus.OK);
     }
+
+    @GetMapping("/get-history/{currentUserId}")
+    public ResponseEntity<List<Tickets>> getHistory(@PathVariable Long currentUserId) {
+        return new ResponseEntity<>(ticketsService.getHistory(currentUserId), HttpStatus.OK);
+    }
 }
 

@@ -77,4 +77,20 @@ public interface TicketsRepository extends JpaRepository<Tickets, Long> {
                 AND t.field = :field_id
             """, nativeQuery = true)
     List<Tickets> findTicketsByExecutorId(@Param("id") Long id, @Param("field_id") Long field_id);
+
+    @Query(value = """
+            SELECT t.*
+            FROM tickets t
+            JOIN tickets_quality_controllers tqc
+                ON t.id = tqc.ticket_id
+            JOIN tickets_executors te
+                ON t.id = te.ticket_id
+            WHERE te.executor_id = :id
+                OR tqc.quality_controller_id = :id
+                OR t.author = :id
+                OR t.dispatcher = :id
+                OR t.executors_nominator = :id
+                OR t.quality_controllers_nominator = :id
+            """, nativeQuery = true)
+    List<Tickets> findTicketsHistory(@Param("id") Long id);
 }
