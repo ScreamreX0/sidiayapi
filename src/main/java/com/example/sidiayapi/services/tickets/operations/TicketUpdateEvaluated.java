@@ -27,6 +27,7 @@ public final class TicketUpdateEvaluated implements ITicketUpdateOperation {
             foundTicket.setExecutors(newTicket.getExecutors());
             foundTicket.setPlaneDate(newTicket.getPlaneDate());
             foundTicket.setStatus(StatusesEnum.ACCEPTED.value);
+            foundTicket.setExecutorsNominator(sender);
             return ticketsRepository.save(foundTicket);
         } else if (newTicketStatus == StatusesEnum.REJECTED.value) {
             checkRequiredFields(newTicket.getReasonForRejection());

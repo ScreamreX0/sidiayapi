@@ -33,6 +33,21 @@ public class Tickets {
     @JsonProperty("field")
     private Fields field;
 
+    @ManyToOne
+    @JoinColumn(name = "dispatcher")
+    @JsonProperty("dispatcher")
+    private Users dispatcher;
+
+    @ManyToOne
+    @JoinColumn(name = "executors_nominator")
+    @JsonProperty("executors_nominator")
+    private Users executorsNominator;
+
+    @ManyToOne
+    @JoinColumn(name = "quality_controllers_nominator")
+    @JsonProperty("quality_controllers_nominator")
+    private Users qualityControllersNominator;
+
     @Column(name = "creation_date")
     @JsonProperty("creation_date")
     private LocalDate creationDate;

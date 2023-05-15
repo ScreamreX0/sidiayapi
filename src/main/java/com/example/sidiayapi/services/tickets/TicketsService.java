@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class TicketsService {
@@ -55,24 +54,47 @@ public class TicketsService {
     }
 
     public List<Tickets> getByUserId(Long userId) {
-        Optional<Users> senderOptional = usersRepository.findById(userId);
-        if (senderOptional.isEmpty()) throw new WrongParamsException("User with this id not exists");
-
-        Users sender = senderOptional.get();
+        Users sender = usersService.findUserById(userId);
         Long senderField = sender.getEmployee().getSubdivision().getField().getId();
-
         JobTitlesEnum senderJobTitle = JobTitlesEnum.getByValue(sender.getEmployee().getJobTitle());
         if (senderJobTitle == null) throw new NotYetImplementedException("This job title not handled yet");
 
         Logger.log("Sender job_title_id: " + senderJobTitle);
         Logger.log("Sender field_id: " + senderField);
 
+        List<Integer> managersStatuses = Arrays.asList(
+                StatusesEnum.EVALUATED.value,
+                StatusesEnum.COMPLETED.value,
+                StatusesEnum.FOR_REVISION.value
+        );
+
         return switch (senderJobTitle) {
-            case OPERATOR -> ticketsRepository.findOperatorTickets(userId);
-            case DISPATCHER -> ticketsRepository.findDispatcherTickets(senderField);
-            case SECTION_CHIEF -> ticketsRepository.findSectionChiefTickets(senderField);
-            case CHIEF_ENGINEER -> ticketsRepository.findChiefEngineerTickets(senderField);
-            case CHIEF_GEOLOGIST -> ticketsRepository.findChiefGeologistTickets(senderField);
+            case OPERATOR -> ticketsRepository.findTicketsByAuthorship(userId);
+            case DISPATCHER -> ticketsRepository.findTicketsByStatusesAndFields(
+                    senderField,
+                    List.of(StatusesEnum.NEW.value)
+            );
+            case SECTION_CHIEF -> ticketsRepository.findTicketsByStatusesAndFields(
+                    senderField,
+                    managersStatuses
+            );
+            case CHIEF_ENGINEER -> ticketsRepository.findTicketsByFieldsAndStatusesAndServices(
+                    senderField,
+                    managersStatuses,
+                    Arrays.asList(
+                            ServicesEnum.NPO.value,
+                            ServicesEnum.ENERGO.value,
+                            ServicesEnum.KIP.value,
+                            ServicesEnum.WELDING.value,
+                            ServicesEnum.CONSTRUCTION_WORKS.value
+                    ));
+            case CHIEF_GEOLOGIST -> ticketsRepository.findTicketsByFieldsAndStatusesAndServices(
+                    senderField,
+                    managersStatuses,
+                    Arrays.asList(
+                            ServicesEnum.PRS.value,
+                            ServicesEnum.RESEARCH.value
+                    ));
             case QUALITY_CONTROLLER -> ticketsRepository.findQualityControlSpecialistTickets(userId, senderField);
             default -> ticketsRepository.findTicketsByExecutorId(userId, senderField);
         };
@@ -138,35 +160,52 @@ public class TicketsService {
 
 
     public TicketData getData(Long userId) {
-        // TODO("Implement")
-//        Optional<Users> senderOptional = usersRepository.findById(userId);
-//        if (senderOptional.isEmpty()) throw new WrongParamsException("User with this id not exists");
-//
-//        Users sender = senderOptional.get();
-//        Integer senderJobTitle = sender.getEmployee().getJobTitle();
-//        Long senderField = sender.getEmployee().getSubdivision().getField().getId();
-//
-//        Logger.log("Sender job_title_id and field_id: " + senderJobTitle + " " + senderField);
-//
-//        if (senderJobTitle == JobTitlesEnum.OPERATOR.value) {
-//            return ticketsRepository.findOperatorTickets(userId);
-//        } else if (senderJobTitle == JobTitlesEnum.DISPATCHER.value) {
-//            return ticketsRepository.findDispatcherTickets();
-//        } else if (senderJobTitle == JobTitlesEnum.SECTION_CHIEF.value) {
-//            return ticketsRepository.findSectionChiefTickets();
-//        } else if (senderJobTitle == JobTitlesEnum.QUALITY_CONTROL_ENGINEER.value
-//                || senderJobTitle == JobTitlesEnum.QUALITY_CONTROL_GEOLOGIST.value) {
-//            return ticketsRepository.findQualityControlSpecialistTickets(userId);
-//        } else {
-//            return ticketsRepository.findTicketsByExecutorId(userId);
-//        }
+        Users sender = usersService.findUserById(userId);
+        Long senderField = sender.getEmployee().getSubdivision().getField().getId();
+        JobTitlesEnum senderJobTitle = JobTitlesEnum.getByValue(sender.getEmployee().getJobTitle());
+        if (senderJobTitle == null) throw new NotYetImplementedException("This job title not handled yet");
+
+        Logger.log("Sender job_title_id: " + senderJobTitle);
+        Logger.log("Sender field_id: " + senderField);
+
+//        return switch (senderJobTitle) {
+//            case OPERATOR -> new TicketData(
+//                    null,
+//                    facilitiesRepository.findByFacility(),
+//                    transportRepository.findByField()
+//            );
+//            case DISPATCHER -> new TicketData();
+//            case SECTION_CHIEF -> new TicketData(
+//                    usersRepository.findByField(),
+//                    facilitiesRepository.findByField(),
+//                    transportRepository.findByField()
+//            );
+//            case CHIEF_ENGINEER, CHIEF_GEOLOGIST -> new TicketData(
+//                    usersRepository.findByDepartmentAndField(),
+//                    facilitiesRepository.findByField(),
+//                    transportRepository.findByField()
+//            );
+//            case QUALITY_CONTROLLER -> ticketsRepository.findQualityControlSpecialistTickets(userId, senderField);
+//            default -> ticketsRepository.findTicketsByExecutorId(userId, senderField);
+//        };
 
         return new TicketData(
                 usersRepository.findAll(),
-                equipmentRepository.findAll(),
                 facilitiesRepository.findAll(),
                 transportRepository.findAll()
         );
+    }
+
+    public List<Tickets> getHistory() {
+        return null;
+        // TODO
+
+        // История заявок - заявки, с которыми пользователь уже работал.
+        // Ничего изменять нельзя. Можно отслеживать заявку.
+
+        //Диспетчер.
+        //Назначающий исполнителей.
+        //Назначающий проверяющих.
     }
 
     private Tickets findTicketById(Long id) {

@@ -22,6 +22,7 @@ public final class TicketUpdateNew implements ITicketUpdateOperation {
             foundTicket.setPriority(newTicket.getPriority());
             foundTicket.setAssessedValue(newTicket.getAssessedValue());
             foundTicket.setAssessedValueDescription(newTicket.getAssessedValueDescription());
+            foundTicket.setDispatcher(sender);
             foundTicket.setStatus(StatusesEnum.EVALUATED.value);
             return ticketsRepository.save(foundTicket);
         } else if (newTicketStatus == StatusesEnum.CANCELED.value) {

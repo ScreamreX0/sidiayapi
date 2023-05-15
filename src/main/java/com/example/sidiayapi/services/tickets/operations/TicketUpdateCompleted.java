@@ -22,6 +22,7 @@ public final class TicketUpdateCompleted implements ITicketUpdateOperation {
             checkRequiredFields(newTicket.getQualityControllers());
             foundTicket.setQualityControllers(newTicket.getQualityControllers());
             foundTicket.setStatus(StatusesEnum.QUALITY_CHECKING.value);
+            foundTicket.setQualityControllersNominator(sender);
             return ticketsRepository.save(foundTicket);
         } else {
             throw new NotYetImplementedException("Not yet implemented. Current ticket status: " + getStatus());

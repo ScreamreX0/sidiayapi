@@ -10,25 +10,12 @@ import java.util.List;
 
 @Repository
 public interface TicketsRepository extends JpaRepository<Tickets, Long> {
-    /**
-     * Gets only its own tickets
-     */
     @Query(value = """
             SELECT *
             FROM tickets t
             WHERE t.author = :id
             """, nativeQuery = true)
-    List<Tickets> findOperatorTickets(@Param("id") Long id);
-
-    /**
-     * Gets tickets where status is NEW
-     */
-    @Query(value = """
-            SELECT *
-            FROM tickets t
-            WHERE t.status = 2 AND t.field = :field_id
-            """, nativeQuery = true)
-    List<Tickets> findDispatcherTickets(@Param("field_id") Long field_id);
+    List<Tickets> findTicketsByAuthorship(@Param("id") Long id);
 
     /**
      * Gets tickets where status EVALUATED or COMPLETED or FOR_REVISION and matches ticket's field
@@ -36,10 +23,11 @@ public interface TicketsRepository extends JpaRepository<Tickets, Long> {
     @Query(value = """
             SELECT *
             FROM tickets t
-            WHERE t.status IN (3, 7, 10)
+            WHERE t.status IN :statuses
                 AND t.field = :field_id
             """, nativeQuery = true)
-    List<Tickets> findSectionChiefTickets(@Param("field_id") Long field_id);
+    List<Tickets> findTicketsByStatusesAndFields(@Param("field_id") Long field_id,
+                                                 @Param("statuses") Iterable<Integer> statuses);
 
     /**
      * Gets tickets where status EVALUATED or COMPLETED or FOR_REVISION
@@ -48,24 +36,13 @@ public interface TicketsRepository extends JpaRepository<Tickets, Long> {
     @Query(value = """
             SELECT *
             FROM tickets t
-            WHERE t.status in (3, 7, 10)
+            WHERE t.status in :statuses
                 AND t.field = :field_id
-                AND service in (1, 2, 3, 4, 7)
+                AND service in :services
             """, nativeQuery = true)
-    List<Tickets> findChiefEngineerTickets(@Param("field_id") Long field_id);
-
-    /**
-     * Gets tickets where status EVALUATED or COMPLETED or FOR_REVISION
-     * and matches ticket's field and matches department
-     */
-    @Query(value = """
-            SELECT *
-            FROM tickets t
-            WHERE t.status in (3, 7, 10)
-                AND t.field = :field_id
-                AND service in (5, 6)
-            """, nativeQuery = true)
-    List<Tickets> findChiefGeologistTickets(@Param("field_id") Long field_id);
+    List<Tickets> findTicketsByFieldsAndStatusesAndServices(@Param("field_id") Long field_id,
+                                                            @Param("statuses") Iterable<Integer> statuses,
+                                                            @Param("services") Iterable<Integer> services);
 
     /**
      * Gets tickets where status QUALITY_CHECKING
@@ -83,7 +60,8 @@ public interface TicketsRepository extends JpaRepository<Tickets, Long> {
                 AND t.status = 8
                 AND t.field = :field_id
             """, nativeQuery = true)
-    List<Tickets> findQualityControlSpecialistTickets(@Param("id") Long id, @Param("field_id") Long field_id);
+    List<Tickets> findQualityControlSpecialistTickets(@Param("id") Long id,
+                                                      @Param("field_id") Long field_id);
 
     /**
      * Gets only its own tickets

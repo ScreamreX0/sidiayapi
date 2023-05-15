@@ -12,7 +12,6 @@ import java.util.List;
 @Data
 public class TicketData {
     List<Users> users;
-    List<Equipment> equipment;
     List<Facilities> facilities;
     List<Transport> transport;
 }
