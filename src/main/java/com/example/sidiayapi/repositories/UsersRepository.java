@@ -6,15 +6,29 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface UsersRepository extends JpaRepository<Users, Long> {
     @Query(value = """
             SELECT u.*
-                FROM users u
-                INNER JOIN employees e
+            FROM users u
+            JOIN employees e
                 ON e.id = u.employee_id
-                WHERE u.password = :password
-                    AND e.email = :email""",
+            WHERE u.password = :password
+                AND e.email = :email
+                    """,
             nativeQuery=true)
     Users findByCredentials(@Param("email") String email, @Param("password") String password);
+
+    @Query(value = """
+            SELECT u.*
+            FROM users u
+            JOIN employees e
+                ON u.employee_id = e.id
+            JOIN subdivisions s
+                ON e.subdivision_id = s.id
+            WHERE s.field_id = :field
+            """, nativeQuery = true)
+    List<Users> findByField(@Param("field") Long field);
 }

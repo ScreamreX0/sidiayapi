@@ -168,32 +168,19 @@ public class TicketsService {
         Logger.log("Sender job_title_id: " + senderJobTitle);
         Logger.log("Sender field_id: " + senderField);
 
-//        return switch (senderJobTitle) {
-//            case OPERATOR -> new TicketData(
-//                    null,
-//                    facilitiesRepository.findByFacility(),
-//                    transportRepository.findByField()
-//            );
-//            case DISPATCHER -> new TicketData();
-//            case SECTION_CHIEF -> new TicketData(
-//                    usersRepository.findByField(),
-//                    facilitiesRepository.findByField(),
-//                    transportRepository.findByField()
-//            );
-//            case CHIEF_ENGINEER, CHIEF_GEOLOGIST -> new TicketData(
-//                    usersRepository.findByDepartmentAndField(),
-//                    facilitiesRepository.findByField(),
-//                    transportRepository.findByField()
-//            );
-//            case QUALITY_CONTROLLER -> ticketsRepository.findQualityControlSpecialistTickets(userId, senderField);
-//            default -> ticketsRepository.findTicketsByExecutorId(userId, senderField);
-//        };
-
-        return new TicketData(
-                usersRepository.findAll(),
-                facilitiesRepository.findAll(),
-                transportRepository.findAll()
-        );
+        return switch (senderJobTitle) {
+            case OPERATOR -> new TicketData(
+                    null,
+                    facilitiesRepository.findByField(senderField),
+                    transportRepository.findByField(senderField)
+            );
+            case SECTION_CHIEF, CHIEF_ENGINEER, CHIEF_GEOLOGIST -> new TicketData(
+                    usersRepository.findByField(senderField),
+                    facilitiesRepository.findByField(senderField),
+                    transportRepository.findByField(senderField)
+            );
+            default -> new TicketData();
+        };
     }
 
     public List<Tickets> getHistory() {
