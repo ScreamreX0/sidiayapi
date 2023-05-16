@@ -1,7 +1,5 @@
 package com.example.sidiayapi.enums;
 
-import java.util.Arrays;
-
 public enum KindsEnum {
     PLANE(1),
     CURRENT(2),
