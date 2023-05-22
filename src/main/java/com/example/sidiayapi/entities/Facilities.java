@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Entity(name = "Facilities")
 @Table(name = "Facilities")
 @Getter
@@ -21,4 +23,7 @@ public class Facilities {
 
     @ManyToOne
     private Fields field;
+
+    @OneToMany
+    private Set<Equipment> equipment;
 }

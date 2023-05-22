@@ -29,7 +29,4 @@ public class Employees {
 
     @ManyToOne
     private Subdivisions subdivision;
-
-    @ManyToOne
-    private Facilities facility;
 }

@@ -20,7 +20,4 @@ public class Equipment {
     private Long id;
 
     private String name;
-
-    @ManyToOne
-    private Facilities facility;
 }
