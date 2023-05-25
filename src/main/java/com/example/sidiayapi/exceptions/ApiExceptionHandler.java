@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.util.NoSuchElementException;
+
 @ControllerAdvice
 public class ApiExceptionHandler {
     @ExceptionHandler(value = WrongCredentialsException.class)
@@ -38,6 +40,11 @@ public class ApiExceptionHandler {
     @ExceptionHandler(value = EntityNotFoundException.class)
     public ResponseEntity<Response> handleEntityNotFoundException(EntityNotFoundException e) {
         return getResponseEntity("Entity not found exception", e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(value = NoSuchElementException.class)
+    public ResponseEntity<Response> handleNoSuchElementException(NoSuchElementException e) {
+        return getResponseEntity("No such element exception", e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private ResponseEntity<Response> getResponseEntity(String defaultMessage, String errorMessage, HttpStatus httpStatus) {

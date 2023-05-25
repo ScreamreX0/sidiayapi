@@ -12,4 +12,6 @@ public class Credentials {
     private String email = "";
     @Builder.Default
     private String password = "";
+    @Builder.Default
+    private String fcm = "";
 }

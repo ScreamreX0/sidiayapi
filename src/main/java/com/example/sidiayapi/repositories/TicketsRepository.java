@@ -52,9 +52,9 @@ public interface TicketsRepository extends JpaRepository<Tickets, Long> {
     @Query(value = """
             SELECT t.*
             FROM tickets t
-            JOIN tickets_quality_controllers tqc
+            LEFT JOIN tickets_quality_controllers tqc
                 ON tqc.ticket_id = t.id
-            JOIN users u
+            LEFT JOIN users u
                 ON tqc.quality_controller_id = u.id
             WHERE u.id = :id
                 AND t.status = 8
@@ -69,9 +69,9 @@ public interface TicketsRepository extends JpaRepository<Tickets, Long> {
     @Query(value = """
             SELECT t.*
             FROM tickets t
-            JOIN tickets_executors te
+            LEFT JOIN tickets_executors te
                 ON te.ticket_id = t.id
-            JOIN users u
+            LEFT JOIN users u
                 ON te.executor_id = u.id
             WHERE u.id = :id
                 AND t.field = :field_id
@@ -81,9 +81,9 @@ public interface TicketsRepository extends JpaRepository<Tickets, Long> {
     @Query(value = """
             SELECT t.*
             FROM tickets t
-            JOIN tickets_quality_controllers tqc
+            LEFT JOIN tickets_quality_controllers tqc
                 ON t.id = tqc.ticket_id
-            JOIN tickets_executors te
+            LEFT JOIN tickets_executors te
                 ON t.id = te.ticket_id
             WHERE te.executor_id = :id
                 OR tqc.quality_controller_id = :id
@@ -93,4 +93,13 @@ public interface TicketsRepository extends JpaRepository<Tickets, Long> {
                 OR t.quality_controllers_nominator = :id
             """, nativeQuery = true)
     List<Tickets> findTicketsHistory(@Param("id") Long id);
+
+    @Query(value = """
+            SELECT t.*
+            FROM tickets_subscriptions ts
+            LEFT JOIN tickets t
+                ON t.id = ts.ticket_id
+            WHERE user_id = :user_id
+            """, nativeQuery = true)
+    List<Tickets> findSubscribedTicketsByUserId(@Param("user_id") Long user_id);
 }

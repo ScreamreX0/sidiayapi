@@ -26,15 +26,14 @@ public class UsersService {
 
         Logger.log("Credentials are correct. Trying to enter");
 
-        Users user = usersRepository
-                .findByCredentials(
-                        credentials.getEmail(),
-                        credentials.getPassword()
-                );
+        Users user = usersRepository.findByCredentials(credentials.getEmail(), credentials.getPassword());
 
         if (user == null) {
             throw new WrongCredentialsException();
         }
+
+        user.setFcmToken(credentials.getFcm());
+        usersRepository.save(user);
 
         return user;
     }

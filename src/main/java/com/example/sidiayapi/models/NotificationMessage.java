@@ -1,13 +1,15 @@
 package com.example.sidiayapi.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.Map;
 
+@AllArgsConstructor
 @Data
 public class NotificationMessage {
-    private String recipientToken;
-    private String title;
-    private String body;
-    private Map<String, String> data;
+    String recipientToken;
+    String title;
+    String body;
+    Map<String, String> data;
 }

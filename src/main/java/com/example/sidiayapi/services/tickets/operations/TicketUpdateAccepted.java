@@ -6,6 +6,8 @@ import com.example.sidiayapi.enums.StatusesEnum;
 import com.example.sidiayapi.exceptions.NotYetImplementedException;
 import com.example.sidiayapi.repositories.TicketsRepository;
 
+import java.util.function.Consumer;
+
 
 public final class TicketUpdateAccepted implements ITicketUpdateOperation {
     private final StatusesEnum status = StatusesEnum.ACCEPTED;

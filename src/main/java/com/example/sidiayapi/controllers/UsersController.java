@@ -21,9 +21,4 @@ public class UsersController {
     public ResponseEntity<Users> signIn(@RequestBody Credentials credentials) {
         return new ResponseEntity<>(usersService.signIn(credentials), HttpStatus.OK);
     }
-
-    @GetMapping
-    public ResponseEntity<Users> checkConnection() {
-        return new ResponseEntity<>(null, HttpStatus.OK);
-    }
 }

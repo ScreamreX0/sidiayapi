@@ -2,6 +2,7 @@ package com.example.sidiayapi.controllers;
 
 import com.example.sidiayapi.dto.TicketData;
 import com.example.sidiayapi.entities.Tickets;
+import com.example.sidiayapi.entities.Users;
 import com.example.sidiayapi.services.tickets.TicketsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +43,21 @@ public class TicketsController {
     @GetMapping("/get-history/{currentUserId}")
     public ResponseEntity<List<Tickets>> getHistory(@PathVariable Long currentUserId) {
         return new ResponseEntity<>(ticketsService.getHistory(currentUserId), HttpStatus.OK);
+    }
+
+    @GetMapping("/subscribe/{userId}/{ticketId}")
+    public ResponseEntity<Users> subscribe(@PathVariable Long userId, @PathVariable Long ticketId) {
+        return new ResponseEntity<>(ticketsService.subscribe(userId, ticketId), HttpStatus.OK);
+    }
+
+    @GetMapping("/unsubscribe/{userId}/{ticketId}")
+    public ResponseEntity<Users> unsubscribe(@PathVariable Long userId, @PathVariable Long ticketId) {
+        return new ResponseEntity<>(ticketsService.unsubscribe(userId, ticketId), HttpStatus.OK);
+    }
+
+    @GetMapping("/get-subscriptions/{userId}")
+    public ResponseEntity<List<Tickets>> getSubscriptions(@PathVariable Long userId) {
+        return new ResponseEntity<>(ticketsService.getSubscriptions(userId), HttpStatus.OK);
     }
 }
 

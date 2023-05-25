@@ -10,6 +10,7 @@ import com.example.sidiayapi.exceptions.NotYetImplementedException;
 import com.example.sidiayapi.exceptions.WrongCredentialsException;
 import com.example.sidiayapi.exceptions.WrongParamsException;
 import com.example.sidiayapi.repositories.*;
+import com.example.sidiayapi.services.FirebaseMessagingService;
 import com.example.sidiayapi.services.UsersService;
 import com.example.sidiayapi.services.tickets.operations.*;
 import com.example.sidiayapi.utils.Logger;
@@ -28,6 +29,8 @@ public class TicketsService {
     private final TransportRepository transportRepository;
     private final UsersService usersService;
 
+    private final FirebaseMessagingService firebaseMessagingService;
+
     private final List<ITicketUpdateOperation> ticketUpdateOperations = Arrays.asList(
             new TicketUpdateNew(),
             new TicketUpdateEvaluated(),
@@ -42,12 +45,14 @@ public class TicketsService {
                           UsersRepository usersRepository,
                           FacilitiesRepository facilitiesRepository,
                           TransportRepository transportRepository,
-                          UsersService usersService) {
+                          UsersService usersService,
+                          FirebaseMessagingService firebaseMessagingService) {
         this.ticketsRepository = ticketsRepository;
         this.usersRepository = usersRepository;
         this.facilitiesRepository = facilitiesRepository;
         this.transportRepository = transportRepository;
         this.usersService = usersService;
+        this.firebaseMessagingService = firebaseMessagingService;
     }
 
     public List<Tickets> getByUserId(Long userId) {
@@ -147,12 +152,15 @@ public class TicketsService {
                 + "\n   Found ticket status: " + foundTicket.getStatus()
                 + "\n   Executing update operation..");
 
-        return operation.update(
-                foundTicket,
-                newTicket,
-                ticketsRepository,
-                sender
-        );
+        Integer oldFoundTicketStatus = foundTicket.getStatus();
+        operation.update(foundTicket, newTicket, ticketsRepository, sender);
+
+        Logger.log("New ticket updated. Notifying all subscribers");
+        if (!foundTicket.getStatus().equals(oldFoundTicketStatus)) {
+            firebaseMessagingService.notifyNewTicketStatus(foundTicket, oldFoundTicketStatus);
+        }
+
+        return foundTicket;
     }
 
 
@@ -180,8 +188,35 @@ public class TicketsService {
         };
     }
 
+    public Users subscribe(Long currentUserId, Long ticketId) {
+        Logger.log("Searching sender");
+        Users sender = usersRepository.findById(currentUserId).orElseThrow();
+
+        Logger.log("Searching ticket");
+        Tickets ticket = ticketsRepository.findById(ticketId).orElseThrow();
+
+        sender.getSubscriptions().add(ticket);
+        return usersRepository.save(sender);
+    }
+
+
+    public Users unsubscribe(Long currentUserId, Long ticketId) {
+        Logger.log("Searching sender");
+        Users sender = usersRepository.findById(currentUserId).orElseThrow();
+
+        Logger.log("Searching ticket");
+        Tickets ticket = ticketsRepository.findById(ticketId).orElseThrow();
+
+        sender.getSubscriptions().remove(ticket);
+        return usersRepository.save(sender);
+    }
+
     public List<Tickets> getHistory(Long userId) {
         return ticketsRepository.findTicketsHistory(userId);
+    }
+
+    public List<Tickets> getSubscriptions(Long userId) {
+        return ticketsRepository.findSubscribedTicketsByUserId(userId);
     }
 
     private Tickets findTicketById(Long id) {
