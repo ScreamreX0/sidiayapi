@@ -30,7 +30,7 @@ public class FirebaseMessagingService {
         List<Users> subscribers = usersRepository.findSubscribersByTicketId(ticket.getId());
         Logger.log("Found " + subscribers.size() + " subscribers to " + ticket.getId() + " ticket");
         for (Users user : subscribers) {
-            if (!user.getFcmToken().isBlank()) {
+            if (user.getFcmToken() != null && !user.getFcmToken().isBlank()) {
                 try {
                     String oldTicketStatus = StatusesEnum.getByValue(oldTicketStatusId).label;
                     String newTicketStatus = StatusesEnum.getByValue(ticket.getStatus()).label;
@@ -41,6 +41,8 @@ public class FirebaseMessagingService {
                     sendNotificationByToken(new NotificationMessage(user.getFcmToken(), title, body, data));
                 } catch (Exception ignored) {
                 }
+            } else {
+                Logger.log("User " + user.getId() + " has null or blank fcm token");
             }
         }
     }
